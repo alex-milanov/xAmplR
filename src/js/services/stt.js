@@ -12,7 +12,7 @@ const url = `https://${region}.api.cognitive.microsoft.com/sts/v1.0/issueToken`;
 
 const init = token => {
 	let speechConfig = SpeechSDK.SpeechConfig.fromAuthorizationToken(token, region);
-	speechConfig.speechRecognitionLanguage = "en-US";
+	speechConfig.speechRecognitionLanguage = "en-GB";
 	let audioConfig = SpeechSDK.AudioConfig.fromDefaultMicrophoneInput();
 	let recognizer = new SpeechSDK.SpeechRecognizer(speechConfig, audioConfig);
 	return recognizer;
