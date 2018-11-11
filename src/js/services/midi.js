@@ -71,7 +71,7 @@ const hook = ({state$, actions}) => {
 					// let inst;
 					switch (state.mode) {
 						case 1:
-							trigger(row, col);
+							trigger(row, col)(state);
 							break;
 						case 0:
 							actions.set(['pads', 'focused'], [
