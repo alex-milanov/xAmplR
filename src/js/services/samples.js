@@ -7,7 +7,7 @@ const request = require('superagent');
 const {obj} = require('iblokz-data');
 const pocket = require('../util/pocket');
 
-const url = `//m2.audiocommons.org/api/audioclips`;
+const url = `http://m2.audiocommons.org/api/audioclips`;
 
 const search = ({pattern, source = 'freesound'}) =>
 	request.get(`${url}/search`)
@@ -29,11 +29,24 @@ const search = ({pattern, source = 'freesound'}) =>
 			state => obj.patch(state, ['samples'], {list})
 		));
 
+const next = () => state => obj.patch(state, ['samples'], {
+	index: state.samples.index < state.samples.list.length - 1
+		? state.samples.index + 1
+		: state.samples.index
+});
+
+const prev = () => state => obj.patch(state, ['samples'], {
+	index: state.samples.index > 0 ? state.samples.index - 1 : state.samples.index
+});
+
 const actions = {
 	initial: {
-		list: []
+		list: [],
+		index: 0
 	},
-	search
+	search,
+	next,
+	prev
 };
 
 let unhook = () => {};

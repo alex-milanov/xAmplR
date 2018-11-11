@@ -2524,6 +2524,8 @@ a, button {
         line-height: 48px;
         height: 48px;
         margin-bottom: 4px 0px; }
+        #ui #board #board-samples tr.selected td {
+          background: rgba(204, 221, 238, 0.3); }
       #ui #board #board-samples td, #ui #board #board-samples th {
         line-height: 48px;
         height: 48px;

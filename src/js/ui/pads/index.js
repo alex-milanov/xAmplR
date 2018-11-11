@@ -14,7 +14,8 @@ module.exports = ({state, actions}) => section('#pads',
 					focused: state.mode === 0 && state.pads.focused[0] === row && state.pads.focused[1] === col
 				},
 				on: {
-					focus: () => actions.set(['pads', 'focused'], [row, col])
+					focus: () => state.mode === 0 && actions.set(['pads', 'focused'], [row, col]),
+					click: () => state.mode === 1 && actions.midi.trigger(row, col)
 				}
 			})
 		))

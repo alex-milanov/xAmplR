@@ -25,8 +25,12 @@ let pads = require('./services/pads.js');
 actions = app.attach(actions, 'pads', pads.actions);
 // midi
 let midi = require('./services/midi.js');
+actions = app.attach(actions, 'midi', midi.actions);
 // stt - speach to text
 let stt = require('./services/stt.js');
+// control
+let control = require('./services/control.js');
+actions = app.attach(actions, 'control', control.actions);
 
 // hot reloading
 if (module.hot) {
@@ -35,7 +39,10 @@ if (module.hot) {
     h => module.hot.accept("./actions", h)
 	).flatMap(() => {
 		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'pads', pads.actions);
 		actions = app.attach(actions, 'samples', samples.actions);
+		actions = app.attach(actions, 'midi', midi.actions);
+		actions = app.attach(actions, 'control', control.actions);
 		return actions.stream.startWith(state => state);
 	}).merge(actions.stream);
 	// ui
@@ -56,7 +63,10 @@ if (module.hot) {
 		samples.unhook();
 		samples = require('./services/samples.js');
 		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'pads', pads.actions);
 		actions = app.attach(actions, 'samples', samples.actions);
+		actions = app.attach(actions, 'midi', midi.actions);
+		actions = app.attach(actions, 'control', control.actions);
 		samples.hook({state$, actions});
 		actions.stream.onNext(state => state);
 	});
@@ -66,6 +76,9 @@ if (module.hot) {
 		pads = require('./services/pads.js');
 		actions = app.adapt(require('./actions'));
 		actions = app.attach(actions, 'pads', pads.actions);
+		actions = app.attach(actions, 'samples', samples.actions);
+		actions = app.attach(actions, 'midi', midi.actions);
+		actions = app.attach(actions, 'control', control.actions);
 		pads.hook({state$, actions});
 		actions.stream.onNext(state => state);
 	});
@@ -73,14 +86,31 @@ if (module.hot) {
 	module.hot.accept("./services/midi.js", function() {
 		midi.unhook();
 		midi = require('./services/midi.js');
+		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'pads', pads.actions);
+		actions = app.attach(actions, 'samples', samples.actions);
+		actions = app.attach(actions, 'midi', midi.actions);
+		actions = app.attach(actions, 'control', control.actions);
 		midi.hook({state$, actions});
 		actions.stream.onNext(state => state);
 	});
-	// midi
+	// stt
 	module.hot.accept("./services/stt.js", function() {
 		stt.unhook();
 		stt = require('./services/stt.js');
 		stt.hook({state$, actions});
+		actions.stream.onNext(state => state);
+	});
+	// control
+	module.hot.accept("./services/control.js", function() {
+		control.unhook();
+		control = require('./services/control.js');
+		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'pads', pads.actions);
+		actions = app.attach(actions, 'samples', samples.actions);
+		actions = app.attach(actions, 'midi', midi.actions);
+		actions = app.attach(actions, 'control', control.actions);
+		control.hook({state$, actions});
 		actions.stream.onNext(state => state);
 	});
 } else {
@@ -108,6 +138,7 @@ samples.hook({state$, actions});
 pads.hook({state$, actions});
 midi.hook({state$, actions});
 stt.hook({state$, actions});
+control.hook({state$, actions});
 
 // livereload impl.
 if (module.hot) {

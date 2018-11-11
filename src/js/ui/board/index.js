@@ -41,8 +41,12 @@ module.exports = ({state, actions}) => section('#board', [
 			th('Play'),
 			th('Load')
 		])),
-		tbody(state.samples.list.map(sample =>
-			tr([
+		tbody(state.samples.list.map((sample, index) =>
+			tr({
+				class: {
+					selected: index === state.samples.index
+				}
+			}, [
 				td([
 					img(`[src="${sample.image}"]`),
 					span(sample.name)

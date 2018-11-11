@@ -14,6 +14,23 @@ const getIds = (inputs, indexes) => inputs
 	.map(inp => inp.id)
 	.filter((id, i) => indexes.indexOf(i) > -1);
 
+const trigger = (row, col) => state => {
+	let sampleId = obj.sub(state, ['pads', 'map', row, col]);
+	if (sampleId) {
+		let inst = sampler.clone(pocket.get(
+			['sampleBank', sampleId]
+		));
+		inst = a.connect(inst, a.context.destination);
+		a.start(inst);
+	}
+	return state;
+};
+
+let actions = {
+	initial: {},
+	trigger
+};
+
 let unhook = () => {};
 const hook = ({state$, actions}) => {
 	let subs = [];
@@ -54,17 +71,7 @@ const hook = ({state$, actions}) => {
 					// let inst;
 					switch (state.mode) {
 						case 1:
-							sampleId = obj.sub(state, ['pads', 'map', row, col]);
-							console.log(sampleId, pocket.get(
-								['sampleBank', sampleId]
-							));
-							if (sampleId) {
-								let inst = sampler.clone(pocket.get(
-									['sampleBank', sampleId]
-								));
-								inst = a.connect(inst, a.context.destination);
-								a.start(inst);
-							}
+							trigger(row, col);
 							break;
 						case 0:
 							actions.set(['pads', 'focused'], [
@@ -84,6 +91,7 @@ const hook = ({state$, actions}) => {
 };
 
 module.exports = {
+	actions,
 	hook,
 	unhook: () => unhook()
 };
