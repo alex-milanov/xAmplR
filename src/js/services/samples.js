@@ -20,7 +20,9 @@ const search = ({pattern, source = 'freesound'}) =>
 				name: m.content.title,
 				author: m.content.author.replace('freesound-users:', ''),
 				sound: m.content.availableAs[0].locator,
-				image: m.content.images[0].locator
+				image: m.content.images[0].locator,
+				license: m.content.license,
+				duration: m.content.duration
 			})
 		))
 		.then(list => (

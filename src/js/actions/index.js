@@ -9,6 +9,9 @@ const midiMap = require('./midi-map');
 // initial
 const initial = {
 	mode: 0,
+	stt: false,
+	sttMic: false,
+	query: '',
 	session: {
 		sample: 'assets/LatinEthnoElektroGroove.mp3',
 		playing: false,

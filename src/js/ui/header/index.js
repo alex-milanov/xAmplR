@@ -6,6 +6,16 @@ const {
 } = require('iblokz-snabbdom-helpers');
 
 module.exports = ({state, actions}) => header([
+	ul('.left', [
+		li(button({
+			on: {
+				click: () => actions.set('sttMic', true)
+			},
+			class: {
+				selected: state.sttMic
+			}
+		}, i('.fa.fa-volume-control-phone')))
+	]),
 	h1('xAmplR'),
 	ul('.right', [
 		li(button({

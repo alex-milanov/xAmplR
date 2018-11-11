@@ -21,6 +21,7 @@
   "dependencies": {
     "bourbon": "^4.2.7",
     "bourbon-neat": "^1.8.0",
+    "cc-icons": "github:cc-icons/cc-icons",
     "file-saver": "^2.0.0-rc.4",
     "font-awesome": "^4.7.0",
     "iblokz-data": "^1.2.0",

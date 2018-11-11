@@ -25,13 +25,18 @@ module.exports = ({state, actions}) => section('#board', [
 			}
 		}
 	}, [
-		input('#board-search-pattern[name="pattern"][placeholder="Query"]'),
+		input(`#board-search-pattern[name="pattern"][placeholder="Query"]`, {
+			attrs: {
+				value: state.query
+			}
+		}),
 		button('Search')
 	]),
 	table('#board-samples[width="100%"][cellspacing=4][cellpadding=0]', [
 		thead(tr([
 			th('[width="60%"]', 'Sample'),
 			th('Author'),
+			th('Duration'),
 			th('License'),
 			th('Play'),
 			th('Load')
@@ -43,7 +48,9 @@ module.exports = ({state, actions}) => section('#board', [
 					span(sample.name)
 				]),
 				td(sample.author),
-				td(),
+				td(`${(sample.duration / 1000).toFixed(2)} m`),
+				td(a(`[target="_blank"][href="${sample.license}"]`,
+					sample.license.replace('http://creativecommons.org/', ''))),
 				td([
 					button({
 						on: {

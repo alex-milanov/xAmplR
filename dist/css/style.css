@@ -2336,6 +2336,9 @@ html {
 *, *::after, *::before {
   box-sizing: inherit; }
 
+html {
+  overflow-y: visible; }
+
 body {
   margin: 0px;
   padding: 0px;
@@ -2360,14 +2363,15 @@ a, button {
   cursor: pointer; }
 
 #ui {
-  position: absolute;
+  position: fixed;
   top: 0px;
   bottom: 0px;
   left: 0px;
   right: 0px;
   width: 100%;
   height: 100%;
-  padding: 4px; }
+  padding: 4px;
+  overflow-y: scroll; }
   #ui header {
     margin: 0px;
     padding: 0px;

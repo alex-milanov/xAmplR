@@ -25,6 +25,8 @@ let pads = require('./services/pads.js');
 actions = app.attach(actions, 'pads', pads.actions);
 // midi
 let midi = require('./services/midi.js');
+// stt - speach to text
+let stt = require('./services/stt.js');
 
 // hot reloading
 if (module.hot) {
@@ -74,6 +76,13 @@ if (module.hot) {
 		midi.hook({state$, actions});
 		actions.stream.onNext(state => state);
 	});
+	// midi
+	module.hot.accept("./services/stt.js", function() {
+		stt.unhook();
+		stt = require('./services/stt.js');
+		stt.hook({state$, actions});
+		actions.stream.onNext(state => state);
+	});
 } else {
 	actions$ = actions.stream;
 }
@@ -98,6 +107,7 @@ wavesurfer.hook({state$, actions});
 samples.hook({state$, actions});
 pads.hook({state$, actions});
 midi.hook({state$, actions});
+stt.hook({state$, actions});
 
 // livereload impl.
 if (module.hot) {
