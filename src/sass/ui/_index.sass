@@ -1,0 +1,25 @@
+
+@mixin ui-button($h: 32px, $p: 10px)
+	display: inline-block
+	box-sizing: border-box
+	height: $h
+	line-height: $h - 2*$p
+	padding: $p
+	cursor: pointer
+	font-size: $h / 2 - 2px
+	&:active
+		padding: ($p + 1) $p ($p - 1) $p
+
+#ui
+	position: absolute
+	top: 0px
+	bottom: 0px
+	left: 0px
+	right: 0px
+	width: 100%
+	height: 100%
+	padding: 4px
+	@import 'header'
+	@import 'waveform'
+	@import 'board'
+	@import 'pads'

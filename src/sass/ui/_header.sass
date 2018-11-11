@@ -1,0 +1,38 @@
+header
+	+header-height(calc(1.5 * #{$line-height}))
+	width: 100%
+	text-align: center
+	color: $color-blue-light
+	// text-shadow: 0px 0px 3px $color-blue-light
+	border: 1px solid $color-blue-light
+	border-radius: 4px
+	h1
+		+reset
+		position: absolute
+		top: 0px
+		left: 0px
+		width: 100%
+		text-align: center
+		font-family: 'Fascinate Inline'
+		font-weight: lighter
+		font-size: 2.2em
+		pointer-events: none
+	ul
+		+header-height(calc(1.5 * #{$line-height}))
+		list-style: none
+		li
+			+header-height(calc(1.5 * #{$line-height}))
+			button
+				+header-height(calc(1.5 * #{$line-height}))
+				width: calc(1.5 * #{$line-height})
+				font-size: 1.8em
+				background: none
+				border: 0px
+				color: $color-blue-light
+				cursor: pointer
+				transition: .3s
+				outline: none
+				&.selected
+					background: rgba($color-blue-light, 0.2)
+				&:hover
+					background: rgba($color-blue-light, 0.3)

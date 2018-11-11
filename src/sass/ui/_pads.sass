@@ -1,0 +1,25 @@
+#pads
+	position: absolute
+	top: calc(1.5 * #{$line-height} + 8px)
+	right: 2px
+	width: calc(4 * #{$pad-width})
+	height: calc(4 * #{$pad-width})
+	.rows
+		height: 100%
+		width: 100%
+		.cols
+			width: 100%
+			height: 25%
+			.pad
+				width: calc(25% - 8px)
+				height: calc(100% - 8px)
+				margin: 4px
+				// border: 1px solid $color-blue-light
+				border: 0px
+				border-radius: 4px
+				background: rgba($color-blue-light, 0.1)
+				outline: none
+				box-shadow: inset 0px 0px 16px $color-blue-light, 0px 0px 3px $color-blue-light
+				transition: .3s
+				&:active, &:focus, &.focused
+					background: rgba($color-blue-light, 0.3)

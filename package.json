@@ -1,0 +1,46 @@
+{
+  "name": "ui-boilerplate",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm run build:assets && npm run build:js && npm run build:sass",
+    "build:js": "browserify src/js/index.js -o dist/js/app.js --debug",
+    "build:sass": "node-sass --source-map dist/css/style.css.map --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/css/style.css",
+    "build:assets": "node bin/move-assets.js",
+    "watch": "npm run watch:js & npm run watch:sass & npm run watch:assets & npm run livereload",
+    "watch:js": "watchify -p browserify-hmr src/js/index.js -o dist/js/app.js --debug",
+    "watch:sass": "nodemon -w src/sass -e sass -x 'npm run build:sass'",
+    "watch:assets": "nodemon -e jpg,jpeg,gif,png,json,md,svg,flac,ogg --watch src/assets --exec 'npm run build:assets'",
+    "livereload": "livereload dist/**/*.css -d",
+    "start": "npm run build && serve --path dist & npm run watch",
+    "sync:gh": "git checkout gh-pages && git rebase master && git push && git checkout master"
+  },
+  "author": "Alex Milanov <alex@i4web.biz>",
+  "license": "MIT",
+  "dependencies": {
+    "bourbon": "^4.2.7",
+    "bourbon-neat": "^1.8.0",
+    "file-saver": "^2.0.0-rc.4",
+    "font-awesome": "^4.7.0",
+    "iblokz-data": "^1.2.0",
+    "iblokz-snabbdom-helpers": "^1.2.0",
+    "jszip": "^3.1.5",
+    "rx": "^4.1.0",
+    "snabbdom": "^0.5.4",
+    "superagent": "^3.3.1",
+    "wavesurfer": "^1.3.4",
+    "wavesurfer.js": "^2.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.1.1",
+    "browserify-hmr": "^0.3.5",
+    "eslint": "^3.12.2",
+    "eslint-config-google": "^0.6.0",
+    "fs-extra": "^1.0.0",
+    "livereload": "^0.6.0",
+    "node-sass": "^4.1.1",
+    "node-serve": "0.0.3",
+    "watchify": "^3.8.0"
+  }
+}
