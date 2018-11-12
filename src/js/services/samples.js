@@ -7,7 +7,7 @@ const request = require('superagent');
 const {obj} = require('iblokz-data');
 const pocket = require('../util/pocket');
 
-const url = `http://m2.audiocommons.org/api/audioclips`;
+const url = `https://m2.audiocommons.org/api/audioclips`;
 
 const search = ({pattern, source = 'freesound'}) =>
 	request.get(`${url}/search`)
