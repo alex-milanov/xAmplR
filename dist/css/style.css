@@ -2370,8 +2370,7 @@ a, button {
   right: 0px;
   width: 100%;
   height: 100%;
-  padding: 4px;
-  overflow-y: scroll; }
+  padding: 4px; }
   #ui header {
     margin: 0px;
     padding: 0px;
@@ -2479,6 +2478,7 @@ a, button {
   #ui #board {
     position: absolute;
     top: calc(1.5 * 48px + 128px + 20px);
+    bottom: 0px;
     left: 4px;
     width: calc(100% - 4 * 104px - 10px); }
     #ui #board #board-search {
@@ -2511,21 +2511,35 @@ a, button {
         color: #cde;
         outline: none; }
       #ui #board #board-search #board-search-pattern {
-        width: calc(100% - 100px); }
+        width: calc(100% - 220px); }
+      #ui #board #board-search select {
+        width: 112px; }
       #ui #board #board-search button {
         width: 96px; }
     #ui #board #board-samples {
+      padding-left: 4px;
+      display: block;
+      position: absolute;
+      top: 48px;
+      height: calc(100% - 48px);
+      overflow-y: scroll;
       width: calc(100% + 8px);
       -webkit-border-horizontal-spacing: 4px;
       margin: 0px -4px;
       -webkit-border-vertical-spacing: 4px;
       border-radius: 4px; }
+      #ui #board #board-samples::-webkit-scrollbar {
+        width: 4px; }
+      #ui #board #board-samples::-webkit-scrollbar-thumb {
+        background-color: rgba(204, 221, 238, 0.2); }
       #ui #board #board-samples tr {
         line-height: 48px;
         height: 48px;
         margin-bottom: 4px 0px; }
         #ui #board #board-samples tr.selected td {
           background: rgba(204, 221, 238, 0.3); }
+      #ui #board #board-samples tbody {
+        overflow-y: scroll; }
       #ui #board #board-samples td, #ui #board #board-samples th {
         line-height: 48px;
         height: 48px;

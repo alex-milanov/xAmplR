@@ -1,25 +1,34 @@
 
 // basic
 =reset
-  margin: 0px
-  padding: 0px
-  display: inline-block
-  box-sizing: border-box
+	margin: 0px
+	padding: 0px
+	display: inline-block
+	box-sizing: border-box
 
 =header-height($s)
-  +reset
-  height: $s
-  line-height: $s
+	+reset
+	height: $s
+	line-height: $s
 
 // media queries
 =phone
-  @media (min-width: #{$phone-width}) and (max-width: #{$tablet-width - 1px})
-    @content
+	@media (min-width: #{$phone-width}) and (max-width: #{$tablet-width - 1px})
+		@content
 
 =tablet
-  @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px})
-    @content
+	@media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px})
+		@content
 
 =desktop
-  @media (min-width: #{$desktop-width})
-    @content
+	@media (min-width: #{$desktop-width})
+		@content
+
+=scrollbar($width, $background-color, $outline)
+	&::-webkit-scrollbar
+		width: $width
+	&::-webkit-scrollbar-track
+		// -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3)
+	&::-webkit-scrollbar-thumb
+		background-color: rgba($background-color, 0.2)
+		// outline: $outline

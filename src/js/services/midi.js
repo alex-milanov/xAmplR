@@ -53,7 +53,7 @@ const hook = ({state$, actions}) => {
 			.map(midiData => (console.log({midiData}), midiData))
 			// .filter(({msg}) => ['noteOn', 'noteOff'].indexOf(msg.state) > -1)
 			.filter(({msg}) =>
-				msg.channel === 13 && msg.state === 'controller' && msg.value === 1
+				msg.state === 'controller' || msg.state === 'noteOn'
 			)
 			.withLatestFrom(state$, (midiData, state) => (Object.assign({}, midiData, {state})))
 			// .filter(({raw, state}) => (
@@ -64,11 +64,35 @@ const hook = ({state$, actions}) => {
 			// ))
 			.subscribe(({raw, msg, state}) => {
 				// console.log(state.midiMap.devices.inputs, raw.input);
-				if (msg.controller >= 10 && msg.controller <= 26) {
-					const col = (msg.controller - 10) % 4;
-					const row = ((msg.controller - 10 - col) / 4);
-					let sampleId = obj.sub(state, ['pads', 'map', row, col]);
-					// let inst;
+				// traktor
+				if (msg.channel === 13 && msg.state === 'controller' && msg.value === 1) {
+					if (msg.controller >= 10 && msg.controller <= 26) {
+						const col = (msg.controller - 10) % 4;
+						const row = ((msg.controller - 10 - col) / 4);
+						let sampleId = obj.sub(state, ['pads', 'map', row, col]);
+						// let inst;
+						switch (state.mode) {
+							case 1:
+								trigger(row, col)(state);
+								break;
+							case 0:
+								actions.set(['pads', 'focused'], [
+									row, col
+								]);
+								break;
+							default:
+						}
+					}
+					if (msg.controller >= 37 && msg.controller <= 39) {
+						actions.set('mode', msg.controller - 37);
+					}
+				}
+				if (msg.channel === 10 && msg.state === 'noteOn') {
+					const col = (msg.note.number - 60) % 4;
+					const row = (msg.note.number - 60 - col) / 4 +
+						(((msg.note.number - 60 - col) / 4 % 2 === 1)
+							? -1 : 1);
+					// console.log((msg.note.number - 60 - col) / 4, (msg.note.number - 60 - col) % 2, row, col);
 					switch (state.mode) {
 						case 1:
 							trigger(row, col)(state);
@@ -80,9 +104,6 @@ const hook = ({state$, actions}) => {
 							break;
 						default:
 					}
-				}
-				if (msg.controller >= 37 && msg.controller <= 39) {
-					actions.set('mode', msg.controller - 37);
 				}
 			})
 	);

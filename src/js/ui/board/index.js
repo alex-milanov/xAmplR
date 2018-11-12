@@ -2,7 +2,7 @@
 
 const {
 	section, span, a, div, pre, img, i,
-	form, input, button, label,
+	form, input, button, label, select, option,
 	ul, li, table, tbody, thead, tr, td, th
 } = require('iblokz-snabbdom-helpers');
 
@@ -14,7 +14,7 @@ const play = url => {
 	an.src = url;
 };
 
-module.exports = ({state, actions}) => section('#board', [
+module.exports = ({state, actions}) => section('#board', [].concat(
 	form('#board-search', {
 		on: {
 			submit: ev => {
@@ -30,9 +30,12 @@ module.exports = ({state, actions}) => section('#board', [
 				value: state.query
 			}
 		}),
+		select(`[name="source"]`, ['freesound', 'jamendo', 'europeana'].map(
+			s => option(`[value="${s}"]`, s)
+		)),
 		button('Search')
 	]),
-	table('#board-samples[width="100%"][cellspacing=4][cellpadding=0]', [
+	(state.samples.list.length > 0) ? table('#board-samples[width="100%"][cellspacing=4][cellpadding=0]', [
 		thead(tr([
 			th('[width="60%"]', 'Sample'),
 			th('Author'),
@@ -52,7 +55,7 @@ module.exports = ({state, actions}) => section('#board', [
 					span(sample.name)
 				]),
 				td(sample.author),
-				td(`${(sample.duration / 1000).toFixed(2)} m`),
+				td(`${(sample.duration / 1000).toFixed(2)} s`),
 				td(a(`[target="_blank"][href="${sample.license}"]`,
 					sample.license.replace('http://creativecommons.org/', ''))),
 				td([
@@ -71,5 +74,5 @@ module.exports = ({state, actions}) => section('#board', [
 				])
 			])
 		))
-	])
-]);
+	]) : []
+));

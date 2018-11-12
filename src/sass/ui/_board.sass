@@ -1,10 +1,12 @@
 #board
 	position: absolute
 	top: calc(1.5 * #{$line-height} + 128px + 20px)
+	bottom: 0px
 	left: 4px
 	width: calc(100% - 4 * #{$pad-width} - 10px)
 	#board-search
 		+header-height($line-height)
+
 		width: 100%
 		> *
 			+header-height($line-height)
@@ -23,10 +25,19 @@
 			color: $color-blue-light
 			outline: none
 		#board-search-pattern
-			width: calc(100% - 100px)
+			width: calc(100% - 220px)
+		select
+			width: 112px
 		button
 			width: 96px
 	#board-samples
+		+scrollbar(4px, $color-blue-light, 2px solid $color-blue-light)
+		padding-left:  4px
+		display: block
+		position: absolute
+		top: $line-height
+		height: calc(100% - #{$line-height})
+		overflow-y: scroll
 		width: calc(100% + 8px)
 		-webkit-border-horizontal-spacing: 4px
 		margin: 0px -4px
@@ -41,6 +52,7 @@
 			&.selected td
 				background: rgba($color-blue-light, 0.3)
 		tbody
+			overflow-y: scroll
 		td, th
 			line-height: $line-height
 			height: $line-height
