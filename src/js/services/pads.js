@@ -9,7 +9,7 @@ const file = require('../util/file');
 const {context} = require('../util/audio');
 const sampler = require('../util/audio/sources/sampler');
 
-const load = (id, url) => $.fromPromise(fetch(url)
+const load = (id, url) => $.fromPromise(fetch(url.replace('http://', '//'))
 	.then(res => res.arrayBuffer()))
 	.concatMap(buffer => $.fromCallback(context.decodeAudioData, context)(buffer))
 	.map(buffer => ({
