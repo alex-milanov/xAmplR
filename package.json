@@ -5,11 +5,11 @@
   "main": "index.js",
   "scripts": {
     "build": "npm run build:assets && npm run build:js && npm run build:sass",
-    "build:js": "browserify src/js/index.js -o dist/js/app.js --debug",
+    "build:js": "browserify -t [ babelify --global ] src/js/index.js -o dist/js/app.js --debug",
     "build:sass": "node-sass --source-map dist/css/style.css.map --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/css/style.css",
     "build:assets": "node bin/move-assets.js",
     "watch": "npm run watch:js & npm run watch:sass & npm run watch:assets & npm run livereload",
-    "watch:js": "watchify -p browserify-hmr src/js/index.js -o dist/js/app.js --debug",
+    "watch:js": "watchify -p browserify-hmr -t [ babelify --global ] src/js/index.js -o dist/js/app.js --debug",
     "watch:sass": "nodemon -w src/sass -e sass -x 'npm run build:sass'",
     "watch:assets": "nodemon -e jpg,jpeg,gif,png,json,md,svg,flac,ogg --watch src/assets --exec 'npm run build:assets'",
     "livereload": "livereload dist/**/*.css -d",
@@ -35,6 +35,11 @@
     "wavesurfer.js": "^2.1.0"
   },
   "devDependencies": {
+    "babel-plugin-transform-object-assign": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-preset-es2015": "^6.16.0",
+    "babel-preset-stage-3": "^6.24.1",
+    "babelify": "^7.3.0",
     "browserify": "^13.1.1",
     "browserify-hmr": "^0.3.5",
     "eslint": "^3.12.2",
