@@ -7,6 +7,7 @@ const {
 } = require('iblokz-snabbdom-helpers');
 
 const formUtil = require('../../util/form');
+const {fn, obj} = require('iblokz-data');
 
 const play = url => {
 	let an = document.createElement('AUDIO');
@@ -35,44 +36,50 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 		)),
 		button('Search')
 	]),
-	(state.samples.list.length > 0) ? table('#board-samples[width="100%"][cellspacing=4][cellpadding=0]', [
-		thead(tr([
-			th('[width="60%"]', 'Sample'),
-			th('Author'),
-			th('Duration'),
-			th('License'),
-			th('Play'),
-			th('Load')
-		])),
-		tbody(state.samples.list.map((sample, index) =>
-			tr({
+	(state.samples.list.length > 0) ? ul('#board-samples',
+		state.samples.list.map((sample, index) =>
+			li({
 				class: {
 					selected: index === state.samples.index
 				}
 			}, [
-				td([
-					img(`[src="${sample.image}"]`),
-					span(sample.name)
-				]),
-				td(sample.author),
-				td(`${(sample.duration / 1000).toFixed(2)} s`),
-				td(a(`[target="_blank"][href="${sample.license}"]`,
-					sample.license.replace('http://creativecommons.org/', ''))),
-				td([
+				img(`.wave[src="${sample.image}"]`),
+				span('.name', sample.name),
+				a(`.author[title="${sample.author}"]`, i('.fa.fa-user')),
+				span('.duration', `${(sample.duration / 1000).toFixed(2)} s`),
+				a(`.license[target="_blank"][href="${sample.license}"]`,
+					fn.pipe(
+						() => sample.license.replace('http://creativecommons.org/', ''),
+						license => obj.switch(license, {
+							'default': license,
+							'licenses/by/3.0/': [
+								i(`.cc.cc-cc.cc-2x`),
+								i(`.cc.cc-by.cc-2x`)
+							],
+							'publicdomain/zero/1.0/': [
+								i(`.cc.cc-cc.cc-2x`),
+								i(`.cc.cc-zero.cc-2x`)
+							],
+							'licenses/by-nc/3.0/': [
+								i(`.cc.cc-cc.cc-2x`),
+								i(`.cc.cc-by.cc-2x`),
+								i(`.cc.cc-nc.cc-2x`)
+							]
+						})
+					)()
+				),
+				span('.controls', [
 					button({
 						on: {
 							click: () => play(sample.sound)
 						}
-					}, i('.fa.fa-play'))
-				]),
-				td([
+					}, i('.fa.fa-play')),
 					button({
 						on: {
 							click: ev => actions.pads.load(sample.id, sample.sound)
 						}
 					}, i('.fa.fa-plus'))
 				])
-			])
-		))
-	]) : []
+			]))
+	) : []
 ));

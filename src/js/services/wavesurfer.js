@@ -17,8 +17,8 @@ const init = container => {
 	container.innerHTML = '';
 	let wavesurfer = WaveSurfer.create({
 		container: '#waveform',
-		waveColor: '#cde',
-		progressColor: '#789',
+		waveColor: '#000',
+		progressColor: '#111516',
 		plugins: [
 			TimelinePlugin.create({
 				container: '#wave-timeline'

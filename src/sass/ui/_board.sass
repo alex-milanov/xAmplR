@@ -1,25 +1,23 @@
 #board
 	position: absolute
-	top: calc(1.5 * #{$line-height} + 128px + 20px)
+	top: calc(1.5 * #{$line-height} + 12px)
 	bottom: 0px
-	left: 4px
-	width: calc(100% - 4 * #{$pad-width} - 10px)
+	left: 8px
+	width: calc((100% - 4 * #{$pad-width}) / 2 - 12px)
 	#board-search
 		+header-height($line-height)
-
 		width: 100%
 		> *
 			+header-height($line-height)
 			float: left
-			border: 1px solid $color-blue-light
-			border-radius: 4px
-			margin-right: 4px
+			background: rgba($color-blue-light, 0.1)
+			margin-right: 2px
+			border: 0px
 			&:first-child
 				margin-left: 0px
 			&:last-child
 				margin-right: 0px
 		input, button, label, select
-			background: none
 			font-size: inherit
 			padding: 0px 10px
 			color: $color-blue-light
@@ -29,51 +27,73 @@
 		select
 			width: 112px
 		button
-			width: 96px
+			width: 104px
+			margin-right: 0px
 	#board-samples
+		+reset
 		+scrollbar(4px, $color-blue-light, 2px solid $color-blue-light)
-		padding-left:  4px
+		margin: 2px 0px
 		display: block
 		position: absolute
 		top: $line-height
 		height: calc(100% - #{$line-height})
 		overflow-y: scroll
-		width: calc(100% + 8px)
-		-webkit-border-horizontal-spacing: 4px
-		margin: 0px -4px
-		-webkit-border-vertical-spacing: 4px
-		border-radius: 4px
-		// border-spacing: 4
-		// border-collapse: collapse
-		tr
-			line-height: $line-height
-			height: $line-height
-			margin-bottom: 4px 0px
-			&.selected td
-				background: rgba($color-blue-light, 0.3)
-		tbody
-			overflow-y: scroll
-		td, th
-			line-height: $line-height
-			height: $line-height
-			border: 1px solid $color-blue-light
-			border-radius: 4px
+		width: 100%
+		list-style: none
+		overflow-y: scroll
+		li
+			+header-height($line-height)
+			display: block
+			position: relative
+			margin-bottom: 2px
+			background: rgba($color-blue-light, 0.05)
 			color: $color-blue-light
-			padding: 0px 10px
-			margin: 0px 4px
-			vertical-align: center
-			&:first-child
-				margin-left: 0px
-			&:last-child
-				margin-right: 0px
+			font-size: 0.8em
+			width: 100%
+			> *
+				+header-height($line-height)
+				min-width: $line-height
+				float: left
+			span
+				white-space: nowrap
+				padding: 0px 4px
 			img
 				height: $line-height
 				max-width: $line-height
 				vertical-align: center
+			.name
+				width: 120px
+				overflow: hidden
+				text-overflow: ellipsis
+			.author
+				text-align: center
+			.duration
+				width: 50px
+			.controls
+				position: absolute
+				top: 0px
+				right: 0px
+			.license
+				width: 100px
+				text-align: center
+				color: $color-blue-light
+				opacity: 0.4
+				&:hover
+					opacity: 0.6
+				> *
+					line-height: $line-height
+					margin-right: 2px
+				font-size: 0.8em
+			&.selected
+				background: rgba($color-blue-light, 0.2)
+				.name
+					width: auto
+				.author, .license, .duration
+					display: none
 			button
 				+header-height($line-height)
+				width: $line-height
 				vertical-align: center
-				width: 100%
 				text-align: center
 				background: none
 				color: darken($color-blue-light, 10%)
