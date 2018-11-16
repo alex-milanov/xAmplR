@@ -9,16 +9,16 @@ const file = require('../util/file');
 const {context} = require('../util/audio');
 const sampler = require('../util/audio/sources/sampler');
 
-const load = (id, url) => $.fromPromise(fetch(url.replace('http://', '//'))
+const load = (sample, url) => $.fromPromise(fetch(url.replace('http://', '//'))
 	.then(res => res.arrayBuffer()))
 	.concatMap(buffer => $.fromCallback(context.decodeAudioData, context)(buffer))
 	.map(buffer => ({
-		id,
+		sample,
 		node: sampler.create(url, buffer)
 	}))
-	.map(sample => (
-		pocket.put(['sampleBank', sample.id], sample.node),
-		state => obj.patch(state, ['pads', 'map', ...state.pads.focused], sample.id)
+	.map(({sample, node}) => (
+		pocket.put(['sampleBank', sample.id], node),
+		state => obj.patch(state, ['pads', 'map', ...state.pads.focused], sample)
 	));
 
 const actions = {

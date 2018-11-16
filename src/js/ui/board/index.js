@@ -76,7 +76,7 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 					}, i('.fa.fa-play')),
 					button({
 						on: {
-							click: ev => actions.pads.load(sample.id, sample.sound)
+							click: ev => actions.pads.load(sample, sample.sound)
 						}
 					}, i('.fa.fa-plus'))
 				])

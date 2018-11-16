@@ -15,7 +15,7 @@ const getIds = (inputs, indexes) => inputs
 	.filter((id, i) => indexes.indexOf(i) > -1);
 
 const trigger = (row, col) => state => {
-	let sampleId = obj.sub(state, ['pads', 'map', row, col]);
+	let sampleId = obj.sub(state, ['pads', 'map', row, col, 'id']);
 	if (sampleId) {
 		let inst = sampler.clone(pocket.get(
 			['sampleBank', sampleId]
@@ -71,17 +71,11 @@ const hook = ({state$, actions}) => {
 						const row = ((msg.controller - 10 - col) / 4);
 						let sampleId = obj.sub(state, ['pads', 'map', row, col]);
 						// let inst;
-						switch (state.mode) {
-							case 1:
-								trigger(row, col)(state);
-								break;
-							case 0:
-								actions.set(['pads', 'focused'], [
-									row, col
-								]);
-								break;
-							default:
-						}
+						actions.set(['pads', 'focused'], [
+							row, col
+						]);
+						if (state.mode === 1)
+							trigger(row, col)(state);
 					}
 					if (msg.controller >= 37 && msg.controller <= 39) {
 						actions.set('mode', msg.controller - 37);
@@ -93,17 +87,11 @@ const hook = ({state$, actions}) => {
 						(((msg.note.number - 60 - col) / 4 % 2 === 1)
 							? -1 : 1);
 					// console.log((msg.note.number - 60 - col) / 4, (msg.note.number - 60 - col) % 2, row, col);
-					switch (state.mode) {
-						case 1:
-							trigger(row, col)(state);
-							break;
-						case 0:
-							actions.set(['pads', 'focused'], [
-								row, col
-							]);
-							break;
-						default:
-					}
+					actions.set(['pads', 'focused'], [
+						row, col
+					]);
+					if (state.mode === 1)
+						trigger(row, col)(state);
 				}
 			})
 	);

@@ -2700,7 +2700,7 @@ a, button {
     right: 4px;
     text-align: center;
     color: #cde;
-    box-shadow: inset 0px 0px 16px rgba(204, 221, 238, 0.5), 0px 0px 10px rgba(204, 221, 238, 0.2);
+    box-shadow: inset 0px 0px 8px rgba(17, 119, 255, 0.3), 0px 0px 3px rgba(204, 221, 238, 0.2);
     border-radius: 8px; }
     #ui header h1 {
       margin: 0px;
@@ -2953,16 +2953,28 @@ a, button {
           width: calc(25% - 10px);
           height: calc(100% - 10px);
           margin: 5px;
+          padding: 0px 10px;
+          overflow: hidden;
+          float: left;
+          text-overflow: ellipsis;
+          font-weight: bold;
+          color: #111;
+          text-shadow: 0px 0px 7px #cde;
           border: 0px;
           border-radius: 4px;
           background: rgba(204, 221, 238, 0.1);
           outline: none;
           box-shadow: inset 0px 0px 16px #cde, 0px 0px 3px #cde;
           transition: background .3s; }
+          #ui #pads .rows .cols .pad.assigned {
+            background-color: rgba(204, 221, 238, 0.3);
+            background-repeat: no-repeat, repeat;
+            background-blend-mode: screen, luminosity;
+            background-size: 116px 116px; }
           #ui #pads .rows .cols .pad:active, #ui #pads .rows .cols .pad.triggered {
-            background: rgba(17, 119, 255, 0.3);
-            transition: background .1s; }
-          #ui #pads .rows .cols .pad:active, #ui #pads .rows .cols .pad:focus, #ui #pads .rows .cols .pad.focused {
+            background-color: rgba(17, 119, 255, 0.3);
+            transition: background-color .1s; }
+          #ui #pads .rows .cols .pad.focused {
             box-shadow: inset 0px 0px 16px #cde, 0px 0px 1px 5px rgba(204, 221, 238, 0.3), 0px 0px 3px #cde; }
 
 /*# sourceMappingURL=style.css.map */

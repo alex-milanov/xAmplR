@@ -51,7 +51,7 @@ const hook = ({state$, actions}) => {
 				}
 				if (pads[0].buttons[3].pressed === true) {
 					let sample = state.samples.list[state.samples.index];
-					if (sample) actions.pads.load(sample.id, sample.sound);
+					if (sample) actions.pads.load(sample, sample.sound);
 				}
 				if (pads[0].buttons[0].pressed === true) {
 					actions.set('sttMic', true);
@@ -67,11 +67,16 @@ const hook = ({state$, actions}) => {
 
 	$.fromEvent(document, 'keydown')
 		.filter(ev => ['input', 'textarea'].indexOf(ev.target.tagName.toLowerCase()) === -1)
-		.subscribe(ev => {
+		.withLatestFrom(state$, (ev, state) => ({ev, state}))
+		.subscribe(({ev, state}) => {
 			let pos = getIndex(ev.key);
 			console.log(ev.key, ev.target, pos);
 			if (pos.row !== -1) {
-				actions.midi.trigger(pos.row, pos.col);
+				actions.set(['pads', 'focused'], [
+					pos.row, pos.col
+				]);
+				if (state.mode === 1)
+					actions.midi.trigger(pos.row, pos.col);
 			}
 		});
 

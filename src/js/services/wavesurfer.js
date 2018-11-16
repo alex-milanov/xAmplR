@@ -56,9 +56,9 @@ const hook = ({state$, actions}) => {
 	let sampleChange$ = state$
 		.distinctUntilChanged(state =>
 			state.pads.focused.toString() +
-				' ' + obj.sub(state.pads, ['map', ...state.pads.focused])
+				' ' + obj.sub(state.pads, ['map', ...state.pads.focused, 'id'])
 		)
-		.map(state => (['id', obj.sub(state.pads.map, state.pads.focused)]))
+		.map(state => (['id', obj.sub(state.pads.map, [...state.pads.focused, 'id'])]))
 		.startWith((['url', 'assets/LatinEthnoElektroGroove.mp3']));
 
 	wavesurfer$
