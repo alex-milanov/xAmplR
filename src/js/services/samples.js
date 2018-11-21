@@ -9,9 +9,9 @@ const pocket = require('../util/pocket');
 
 const url = `https://m2.audiocommons.org/api/audioclips`;
 
-const search = ({pattern, source = 'freesound'}) =>
+const search = ({pattern, source = 'freesound', limit = 12, page = 1}) =>
 	request.get(`${url}/search`)
-		.query({pattern, source})
+		.query({pattern, source, limit, page})
 		.then(res => res.body.results)
 		.then(results => (console.log(results), results))
 		.then(results => results[0].members.map(
@@ -26,7 +26,9 @@ const search = ({pattern, source = 'freesound'}) =>
 			})
 		))
 		.then(list => (
-			state => obj.patch(state, ['samples'], {list})
+			state => obj.patch(state, ['samples'], {
+				list: page > 1 ? [].concat(state.samples.list, list) : list,
+				query: {pattern, source, limit, page}})
 		));
 
 const next = () => state => obj.patch(state, ['samples'], {

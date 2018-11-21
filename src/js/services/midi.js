@@ -74,7 +74,7 @@ const hook = ({state$, actions}) => {
 						actions.set(['pads', 'focused'], [
 							row, col
 						]);
-						if (state.mode === 1)
+						if (state.mode === 2)
 							trigger(row, col)(state);
 					}
 					if (msg.controller >= 37 && msg.controller <= 39) {
@@ -90,7 +90,7 @@ const hook = ({state$, actions}) => {
 					actions.set(['pads', 'focused'], [
 						row, col
 					]);
-					if (state.mode === 1)
+					if (state.mode === 2)
 						trigger(row, col)(state);
 				}
 			})

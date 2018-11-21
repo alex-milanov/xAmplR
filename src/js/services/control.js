@@ -69,14 +69,18 @@ const hook = ({state$, actions}) => {
 		.filter(ev => ['input', 'textarea'].indexOf(ev.target.tagName.toLowerCase()) === -1)
 		.withLatestFrom(state$, (ev, state) => ({ev, state}))
 		.subscribe(({ev, state}) => {
-			let pos = getIndex(ev.key);
-			console.log(ev.key, ev.target, pos);
-			if (pos.row !== -1) {
-				actions.set(['pads', 'focused'], [
-					pos.row, pos.col
-				]);
-				if (state.mode === 1)
-					actions.midi.trigger(pos.row, pos.col);
+			if (ev.key > 0 && ev.key < 4) {
+				actions.set('mode', parseInt(ev.key, 10) - 1);
+			} else {
+				let pos = getIndex(ev.key);
+				console.log(ev.key, ev.target, pos);
+				if (pos.row !== -1) {
+					actions.set(['pads', 'focused'], [
+						pos.row, pos.col
+					]);
+					if (state.mode === 2)
+						actions.midi.trigger(pos.row, pos.col);
+				}
 			}
 		});
 

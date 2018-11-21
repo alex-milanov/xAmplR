@@ -8,7 +8,7 @@ const midiMap = require('./midi-map');
 
 // initial
 const initial = {
-	mode: 0,
+	mode: 1,
 	stt: false,
 	sttMic: false,
 	query: '',
@@ -17,6 +17,15 @@ const initial = {
 		playing: false,
 		focused: [0, 0],
 		pads: {}
+	},
+	samples: {
+		list: [],
+		query: {
+			page: 1,
+			pattern: '',
+			source: 'freesound',
+			limit: 12
+		}
 	}
 };
 

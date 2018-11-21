@@ -39,9 +39,8 @@ const hook = ({state$, actions}) => {
 		.map(state => init(state.stt))
 		.flatMap(recognize)
 		.subscribe(res => {
-			let query = res.privText.replace(/\.$/, '');
-			actions.set('query', query);
-			actions.samples.search({pattern: query});
+			let pattern = res.privText.replace(/\.$/, '');
+			actions.samples.search({pattern});
 			actions.set('sttMic', false);
 		});
 

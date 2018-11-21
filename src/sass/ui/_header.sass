@@ -26,6 +26,7 @@ header
 		list-style: none
 		li
 			+header-height(calc(1.5 * #{$line-height}))
+			float: left
 			button
 				+header-height(calc(1.5 * #{$line-height}))
 				width: calc(1.5 * #{$line-height})
@@ -40,3 +41,7 @@ header
 					background: rgba($color-blue-light, 0.2)
 				&:hover
 					background: rgba($color-blue-light, 0.3)
+				img
+					vertical-align: middle
+					height: calc(1.2 * #{$line-height})
+					width: calc(1.2 * #{$line-height})

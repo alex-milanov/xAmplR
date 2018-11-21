@@ -23,8 +23,10 @@ module.exports = ({state, actions}) => section('#pads',
 				},
 				on: {
 					focus: () => actions.set(['pads', 'focused'], [row, col]),
-					click: () => state.mode === 1 && actions.midi.trigger(row, col)
-						|| state.mode === 0 && actions.set(['pads', 'focused'], [row, col])
+					click: () => (
+						state.mode === 2 && actions.midi.trigger(row, col),
+						state.mode === 0 && actions.set(['pads', 'focused'], [row, col])
+					)
 				}
 			}, obj.sub(state, ['pads', 'map', row, col, 'name']) || '')
 		))

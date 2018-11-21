@@ -26,9 +26,10 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 			}
 		}
 	}, [
+		input(`[type="hidden"][name="page"][value=1]`),
 		input(`#board-search-pattern[name="pattern"][placeholder="Query"]`, {
 			attrs: {
-				value: state.query
+				value: state.samples.query.pattern
 			}
 		}),
 		select(`[name="source"]`, ['freesound', 'jamendo', 'europeana'].map(
@@ -36,7 +37,7 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 		)),
 		button('Search')
 	]),
-	(state.samples.list.length > 0) ? ul('#board-samples',
+	(state.samples.list.length > 0) ? ul('#board-samples', [].concat(
 		state.samples.list.map((sample, index) =>
 			li({
 				class: {
@@ -44,7 +45,11 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 				}
 			}, [
 				img(`.wave[src="${sample.image}"]`),
-				span('.name', sample.name),
+				span('.name', {
+					on: {
+						click: () => actions.set(['samples', 'index'], index)
+					}
+				}, sample.name),
 				a(`.author[title="${sample.author}"]`, i('.fa.fa-user')),
 				span('.duration', `${(sample.duration / 1000).toFixed(2)} s`),
 				a(`.license[target="_blank"][href="${sample.license}"]`,
@@ -64,6 +69,9 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 								i(`.cc.cc-cc.cc-2x`),
 								i(`.cc.cc-by.cc-2x`),
 								i(`.cc.cc-nc.cc-2x`)
+							],
+							'licenses/sampling+/1.0/': [
+								i(`.cc.cc-cc.cc-2x`)
 							]
 						})
 					)()
@@ -80,6 +88,11 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 						}
 					}, i('.fa.fa-plus'))
 				])
-			]))
-	) : []
+			])),
+		li(button(`.full`, {
+			on: {
+				click: () => actions.samples.search({...state.samples.query, page: state.samples.query.page + 1})
+			}
+		}, 'Load more samples...'))
+	)) : []
 ));

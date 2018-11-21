@@ -2731,7 +2731,8 @@ a, button {
         display: inline-block;
         box-sizing: border-box;
         height: calc(1.5 * 40px);
-        line-height: calc(1.5 * 40px); }
+        line-height: calc(1.5 * 40px);
+        float: left; }
         #ui header ul li button {
           margin: 0px;
           padding: 0px;
@@ -2751,6 +2752,10 @@ a, button {
             background: rgba(204, 221, 238, 0.2); }
           #ui header ul li button:hover {
             background: rgba(204, 221, 238, 0.3); }
+          #ui header ul li button img {
+            vertical-align: middle;
+            height: calc(1.2 * 40px);
+            width: calc(1.2 * 40px); }
   #ui .waveform {
     position: absolute;
     top: calc(1.5 * 40px + 14px);
@@ -2937,6 +2942,10 @@ a, button {
           #ui #board #board-samples li button:hover {
             color: #cde;
             opacity: 1; }
+          #ui #board #board-samples li button.full {
+            width: 100%;
+            font-size: 1.2em;
+            text-align: center; }
   #ui #pads {
     position: absolute;
     top: calc(1.5 * 40px + 10px);
