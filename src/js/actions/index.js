@@ -26,6 +26,24 @@ const initial = {
 			source: 'freesound',
 			limit: 12
 		}
+	},
+	rack: {
+		vcf: {
+			on: false,
+			expanded: true,
+			type: 'lowpass',
+			cutoff: 0.64,
+			resonance: 0,
+			gain: 0
+		},
+		reverb: {
+			on: false,
+			seconds: 3,
+			decay: 2,
+			reverse: false,
+			dry: 0.8,
+			wet: 0.7
+		}
 	}
 };
 

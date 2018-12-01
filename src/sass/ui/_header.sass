@@ -1,14 +1,15 @@
 header
 	+header-height(calc(1.5 * #{$line-height}))
 	position: absolute
-	top: 4px
-	left: 4px
-	right: 4px
+	top: 6px
+	left: 8px
+	right: 8px
 	text-align: center
 	color: $color-blue-light
 	// text-shadow: 0px 0px 3px $color-blue-light
-	box-shadow: inset 0px 0px 8px rgba(#17f, 0.3), 0px 0px 3px rgba($color-blue-light, 0.2)
-	border-radius: 8px
+	background-color: rgba(#4a536b, 0.2)
+	box-shadow: 0px 0px 3px rgba($color-blue-light, 0.5), inset 0px -5px 3px rgba($color-blue-light, 0.1)
+	border-radius: 4px
 	h1
 		+reset
 		position: absolute
@@ -20,7 +21,7 @@ header
 		font-weight: lighter
 		font-size: 2.2em
 		pointer-events: none
-		text-shadow: 0px 0px 15px #17f
+		text-shadow: 0px 0px 15px #111319
 	ul
 		+header-height(calc(1.5 * #{$line-height}))
 		list-style: none
@@ -43,5 +44,5 @@ header
 					background: rgba($color-blue-light, 0.3)
 				img
 					vertical-align: middle
-					height: calc(1.2 * #{$line-height})
-					width: calc(1.2 * #{$line-height})
+					height: calc(1 * #{$line-height})
+					width: calc(1 * #{$line-height})

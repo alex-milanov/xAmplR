@@ -9,6 +9,7 @@ const {
 const header = require('./header');
 const board = require('./board');
 const pads = require('./pads');
+const rack = require('./rack');
 // const counter = require('./counter');
 
 module.exports = ({state, actions}) => section('#ui', [
@@ -23,5 +24,6 @@ module.exports = ({state, actions}) => section('#ui', [
 		}, i(`.fa.fa-${state.session.playing ? 'pause' : 'play'}`))
 	]),
 	board({state, actions}),
-	pads({state, actions})
+	pads({state, actions}),
+	rack({state, actions})
 ]);

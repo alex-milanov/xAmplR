@@ -66,7 +66,10 @@ const hook = ({state$, actions}) => {
 		});
 
 	$.fromEvent(document, 'keydown')
-		.filter(ev => ['input', 'textarea'].indexOf(ev.target.tagName.toLowerCase()) === -1)
+		.filter(ev =>
+			['input', 'textarea'].indexOf(ev.target.tagName.toLowerCase()) === -1
+			|| ev.target.tagName.toLowerCase() === 'input' && ev.target.type === 'range'
+		)
 		.withLatestFrom(state$, (ev, state) => ({ev, state}))
 		.subscribe(({ev, state}) => {
 			if (ev.key > 0 && ev.key < 4) {

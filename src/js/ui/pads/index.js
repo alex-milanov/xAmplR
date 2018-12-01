@@ -13,9 +13,9 @@ module.exports = ({state, actions}) => section('#pads',
 		div('.cols', Array(4).fill({}).map((a, col) =>
 			button('.pad', {
 				style: {
-					backgroundImage: obj.sub(state, ['pads', 'map', row, col, 'id'])
-						? `url(${obj.sub(state, ['pads', 'map', row, col, 'image'])})`
-						: 'none'
+					...(obj.sub(state, ['pads', 'map', row, col, 'id'])
+						? {backgroundImage: `url(${obj.sub(state, ['pads', 'map', row, col, 'image'])})`}
+						: {})
 				},
 				class: {
 					focused: state.pads.focused[0] === row && state.pads.focused[1] === col,
@@ -23,9 +23,13 @@ module.exports = ({state, actions}) => section('#pads',
 				},
 				on: {
 					focus: () => actions.set(['pads', 'focused'], [row, col]),
-					click: () => (
+					mousedown: () => (
 						state.mode === 2 && actions.midi.trigger(row, col),
-						state.mode === 0 && actions.set(['pads', 'focused'], [row, col])
+						state.mode === 1 && actions.set(['pads', 'focused'], [row, col])
+					),
+					touchstart: () => (
+						state.mode === 2 && actions.midi.trigger(row, col),
+						state.mode === 1 && actions.set(['pads', 'focused'], [row, col])
 					)
 				}
 			}, obj.sub(state, ['pads', 'map', row, col, 'name']) || '')

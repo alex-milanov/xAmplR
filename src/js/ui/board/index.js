@@ -79,12 +79,14 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 				span('.controls', [
 					button({
 						on: {
-							click: () => play(sample.sound)
+							click: () => play(sample.sound),
+							touchstart: () => play(sample.sound)
 						}
 					}, i('.fa.fa-play')),
 					button({
 						on: {
-							click: ev => actions.pads.load(sample, sample.sound)
+							click: ev => actions.pads.load(sample, sample.sound),
+							touchstart: ev => actions.pads.load(sample, sample.sound)
 						}
 					}, i('.fa.fa-plus'))
 				])

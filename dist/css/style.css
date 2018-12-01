@@ -2661,7 +2661,7 @@ body {
   display: inline-block;
   box-sizing: border-box;
   font-family: "Open Sans";
-  background: #111516; }
+  background: #111319; }
 
 .left {
   float: left; }
@@ -2695,13 +2695,14 @@ a, button {
     height: calc(1.5 * 40px);
     line-height: calc(1.5 * 40px);
     position: absolute;
-    top: 4px;
-    left: 4px;
-    right: 4px;
+    top: 6px;
+    left: 8px;
+    right: 8px;
     text-align: center;
-    color: #cde;
-    box-shadow: inset 0px 0px 8px rgba(17, 119, 255, 0.3), 0px 0px 3px rgba(204, 221, 238, 0.2);
-    border-radius: 8px; }
+    color: #b5bbcc;
+    background-color: rgba(74, 83, 107, 0.2);
+    box-shadow: 0px 0px 3px rgba(181, 187, 204, 0.5), inset 0px -5px 3px rgba(181, 187, 204, 0.1);
+    border-radius: 4px; }
     #ui header h1 {
       margin: 0px;
       padding: 0px;
@@ -2716,7 +2717,7 @@ a, button {
       font-weight: lighter;
       font-size: 2.2em;
       pointer-events: none;
-      text-shadow: 0px 0px 15px #17f; }
+      text-shadow: 0px 0px 15px #111319; }
     #ui header ul {
       margin: 0px;
       padding: 0px;
@@ -2744,25 +2745,25 @@ a, button {
           font-size: 1.8em;
           background: none;
           border: 0px;
-          color: #cde;
+          color: #b5bbcc;
           cursor: pointer;
           transition: .3s;
           outline: none; }
           #ui header ul li button.selected {
-            background: rgba(204, 221, 238, 0.2); }
+            background: rgba(181, 187, 204, 0.2); }
           #ui header ul li button:hover {
-            background: rgba(204, 221, 238, 0.3); }
+            background: rgba(181, 187, 204, 0.3); }
           #ui header ul li button img {
             vertical-align: middle;
-            height: calc(1.2 * 40px);
-            width: calc(1.2 * 40px); }
+            height: calc(1 * 40px);
+            width: calc(1 * 40px); }
   #ui .waveform {
     position: absolute;
     top: calc(1.5 * 40px + 14px);
     right: 8px;
-    box-shadow: inset 0px 0px 32px #111516, 0px 0px 10px #1177ff;
-    background: #1177ff;
-    border-radius: 8px;
+    box-shadow: inset 0px 0px 32px #111319, 0px 0px 3px rgba(143, 165, 239, 0.7);
+    background: rgba(143, 165, 239, 0.8);
+    border-radius: 4px;
     width: calc((100% - 4 * 116px) / 2 - 14px); }
     #ui .waveform #waveform {
       width: 100%;
@@ -2775,7 +2776,7 @@ a, button {
       bottom: 4px;
       left: 0px;
       width: 100%;
-      background: rgba(204, 221, 238, 0.3);
+      background: rgba(181, 187, 204, 0.3);
       pointer-events: none;
       opacity: 0.3; }
     #ui .waveform button {
@@ -2793,7 +2794,7 @@ a, button {
       margin-left: -32px;
       z-index: 99;
       font-size: 2em;
-      background: #cde;
+      background: #b5bbcc;
       border: 0px;
       outline: none;
       border-radius: 100%;
@@ -2826,7 +2827,7 @@ a, button {
         height: 40px;
         line-height: 40px;
         float: left;
-        background: rgba(204, 221, 238, 0.1);
+        background: rgba(181, 187, 204, 0.1);
         margin-right: 2px;
         border: 0px; }
         #ui #board #board-search > *:first-child {
@@ -2836,7 +2837,7 @@ a, button {
       #ui #board #board-search input, #ui #board #board-search button, #ui #board #board-search label, #ui #board #board-search select {
         font-size: inherit;
         padding: 0px 10px;
-        color: #cde;
+        color: #b5bbcc;
         outline: none; }
       #ui #board #board-search #board-search-pattern {
         width: calc(100% - 220px); }
@@ -2862,7 +2863,7 @@ a, button {
       #ui #board #board-samples::-webkit-scrollbar {
         width: 4px; }
       #ui #board #board-samples::-webkit-scrollbar-thumb {
-        background-color: rgba(204, 221, 238, 0.2); }
+        background-color: rgba(181, 187, 204, 0.2); }
       #ui #board #board-samples li {
         margin: 0px;
         padding: 0px;
@@ -2873,8 +2874,8 @@ a, button {
         display: block;
         position: relative;
         margin-bottom: 2px;
-        background: rgba(204, 221, 238, 0.05);
-        color: #cde;
+        background: rgba(181, 187, 204, 0.05);
+        color: #b5bbcc;
         font-size: 0.8em;
         width: 100%; }
         #ui #board #board-samples li > * {
@@ -2894,7 +2895,7 @@ a, button {
           max-width: 40px;
           vertical-align: center; }
         #ui #board #board-samples li .name {
-          width: 120px;
+          width: 140px;
           overflow: hidden;
           text-overflow: ellipsis; }
         #ui #board #board-samples li .author {
@@ -2906,9 +2907,9 @@ a, button {
           top: 0px;
           right: 0px; }
         #ui #board #board-samples li .license {
-          width: 100px;
+          width: 120px;
           text-align: center;
-          color: #cde;
+          color: #b5bbcc;
           opacity: 0.4;
           font-size: 0.8em; }
           #ui #board #board-samples li .license:hover {
@@ -2917,7 +2918,7 @@ a, button {
             line-height: 40px;
             margin-right: 2px; }
         #ui #board #board-samples li.selected {
-          background: rgba(204, 221, 238, 0.2); }
+          background: rgba(181, 187, 204, 0.2); }
           #ui #board #board-samples li.selected .name {
             width: auto; }
           #ui #board #board-samples li.selected .author, #ui #board #board-samples li.selected .license, #ui #board #board-samples li.selected .duration {
@@ -2929,18 +2930,18 @@ a, button {
           box-sizing: border-box;
           height: 40px;
           line-height: 40px;
-          width: 40px;
+          width: calc(0.8 * 40px);
           vertical-align: center;
           text-align: center;
           background: none;
-          color: #a6c4e1;
+          color: #97a0b7;
           border: 0px;
           outline: none;
           transition: .3s;
-          font-size: 1.8em;
+          font-size: 1.6em;
           opacity: 0.8; }
           #ui #board #board-samples li button:hover {
-            color: #cde;
+            color: #b5bbcc;
             opacity: 1; }
           #ui #board #board-samples li button.full {
             width: 100%;
@@ -2959,31 +2960,197 @@ a, button {
         width: 100%;
         height: 25%; }
         #ui #pads .rows .cols .pad {
-          width: calc(25% - 10px);
-          height: calc(100% - 10px);
-          margin: 5px;
+          width: calc(25% - 8px);
+          height: calc(100% - 8px);
+          margin: 4px;
           padding: 0px 10px;
           overflow: hidden;
           float: left;
           text-overflow: ellipsis;
           font-weight: bold;
           color: #111;
-          text-shadow: 0px 0px 7px #cde;
+          text-shadow: 0px 0px 10px rgba(181, 187, 204, 0.7);
           border: 0px;
           border-radius: 4px;
-          background: rgba(204, 221, 238, 0.1);
+          background-color: rgba(74, 83, 107, 0.4);
           outline: none;
-          box-shadow: inset 0px 0px 16px #cde, 0px 0px 3px #cde;
-          transition: background .3s; }
+          box-shadow: 0px 0px 3px rgba(181, 187, 204, 0.5), inset 0px -5px 3px rgba(181, 187, 204, 0.1);
+          transition: box-shadow .3s, background-color .1s; }
           #ui #pads .rows .cols .pad.assigned {
-            background-color: rgba(204, 221, 238, 0.3);
+            background-color: rgba(74, 83, 107, 0.6);
             background-repeat: no-repeat, repeat;
             background-blend-mode: screen, luminosity;
             background-size: 116px 116px; }
-          #ui #pads .rows .cols .pad:active, #ui #pads .rows .cols .pad.triggered {
-            background-color: rgba(17, 119, 255, 0.3);
-            transition: background-color .1s; }
           #ui #pads .rows .cols .pad.focused {
-            box-shadow: inset 0px 0px 16px #cde, 0px 0px 1px 5px rgba(204, 221, 238, 0.3), 0px 0px 3px #cde; }
+            background-color: rgba(74, 83, 107, 0.6);
+            box-shadow: 0px 0px 5px rgba(181, 187, 204, 0.5), inset 0px -1px 3px 1px rgba(181, 187, 204, 0.3); }
+          #ui #pads .rows .cols .pad:active, #ui #pads .rows .cols .pad.triggered {
+            background-color: rgba(74, 83, 107, 0.7); }
+  #ui #rack {
+    position: absolute;
+    top: calc(1.5 * 40px + 24px + 128px);
+    right: 8px;
+    color: #b5bbcc;
+    width: calc((100% - 4 * 116px) / 2 - 14px); }
+    #ui #rack > fieldset {
+      position: relative;
+      margin-bottom: 10px;
+      padding-top: 20px;
+      background-color: rgba(74, 83, 107, 0.2);
+      box-shadow: 0px 0px 3px rgba(181, 187, 204, 0.5), inset 0px -5px 3px rgba(181, 187, 204, 0.1);
+      border-radius: 4px;
+      border: 0px; }
+      #ui #rack > fieldset .on-switch {
+        position: absolute;
+        top: 8px;
+        right: 8px;
+        height: 30px;
+        line-height: 30px;
+        margin: 0px;
+        width: 16px;
+        cursor: pointer;
+        outline: none;
+        color: #aaa;
+        text-align: center;
+        transition: color .3s, text-shadow .3s; }
+        #ui #rack > fieldset .on-switch.on {
+          color: #fff;
+          text-shadow: 0px 0px 1px rgba(33, 33, 33, 0.7); }
+      #ui #rack > fieldset legend {
+        margin: 0px;
+        padding: 0px;
+        display: inline-block;
+        box-sizing: border-box; }
+        #ui #rack > fieldset legend div {
+          display: inline-block;
+          margin: 0px; }
+        #ui #rack > fieldset legend img {
+          height: 22px;
+          vertical-align: middle; }
+        #ui #rack > fieldset legend span > i {
+          margin: 0px;
+          padding: 0px;
+          display: inline-block;
+          box-sizing: border-box;
+          height: 16px;
+          line-height: 16px;
+          width: 16px;
+          text-align: center; }
+      #ui #rack > fieldset input[type=range] {
+        margin: 0px;
+        padding: 0px;
+        display: inline-block;
+        box-sizing: border-box;
+        margin: 0px;
+        display: block;
+        width: 100%;
+        -webkit-appearance: none;
+        background-color: #777;
+        outline: none;
+        margin: 8px 0px;
+        border-radius: 10px;
+        height: 2px;
+        cursor: pointer; }
+      #ui #rack > fieldset input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        background-color: #bbb;
+        border: 1px solid #777;
+        width: 12px;
+        height: 12px;
+        border-radius: 10px;
+        transition: .3s; }
+      #ui #rack > fieldset .horizontal > * {
+        float: left;
+        display: inline-block; }
+      #ui #rack > fieldset .vertical {
+        height: 90px;
+        position: relative; }
+        #ui #rack > fieldset .vertical > * {
+          display: inline-block;
+          float: none;
+          position: absolute; }
+          #ui #rack > fieldset .vertical > *:nth-of-type(1) {
+            left: 0px; }
+          #ui #rack > fieldset .vertical > *:nth-of-type(2) {
+            left: 25%; }
+          #ui #rack > fieldset .vertical > *:nth-of-type(3) {
+            left: 50%; }
+          #ui #rack > fieldset .vertical > *:nth-of-type(4) {
+            left: 75%; }
+          #ui #rack > fieldset .vertical > *:nth-of-type(5) {
+            left: 100%; }
+        #ui #rack > fieldset .vertical label {
+          top: 80px;
+          width: 20%; }
+        #ui #rack > fieldset .vertical input[type=range] {
+          top: 0px;
+          width: 70px;
+          transform: rotate(-90deg);
+          margin: 38px 0px 0px -30px; }
+        #ui #rack > fieldset .vertical .right {
+          top: 0px;
+          width: 25%;
+          margin-left: 10%; }
+      #ui #rack > fieldset input[type=number] {
+        display: inline-block;
+        text-align: center;
+        border: 0px;
+        box-shadow: inset 0px 0px 1px rgba(33, 77, 55, 0.5);
+        color: #333;
+        border-radius: 4px;
+        -moz-appearance: textfield;
+        -webkit-appearance: textfield;
+        appearance: textfield;
+        position: relative;
+        width: 32px;
+        height: 20px;
+        outline: none; }
+        #ui #rack > fieldset input[type=number]::-webkit-inner-spin-button, #ui #rack > fieldset input[type=number]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0; }
+        #ui #rack > fieldset input[type=number]:active {
+          outline: none; }
+      #ui #rack > fieldset button.btn-opt {
+        margin: 0px 2px;
+        height: 20px;
+        line-height: 20px;
+        padding: 0px 2px;
+        box-sizing: border-box;
+        border: 0px;
+        background: #bbb;
+        cursor: pointer;
+        outline: none;
+        transition: background .1ss; }
+        #ui #rack > fieldset button.btn-opt:active {
+          outline: none; }
+        #ui #rack > fieldset button.btn-opt.on {
+          background: #999; }
+        #ui #rack > fieldset button.btn-opt > * {
+          height: 20px;
+          line-height: 20px;
+          font-size: 20px;
+          padding: 0px;
+          box-sizing: border-box;
+          border: 0px; }
+      #ui #rack > fieldset div {
+        clear: both; }
+      #ui #rack > fieldset select {
+        margin: 0px;
+        padding: 0px;
+        display: inline-block;
+        box-sizing: border-box;
+        height: 20px;
+        line-height: 20px;
+        padding: 0px 2px;
+        display: block;
+        width: 60%;
+        float: right;
+        border: 0px;
+        border-radius: 0px;
+        outline: none;
+        box-shadow: inset 0px 0px 1px #333;
+        background: #ccc; }
+      #ui #rack > fieldset label {
+        clear: both; }
 
 /*# sourceMappingURL=style.css.map */

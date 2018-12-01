@@ -10,6 +10,23 @@ const pocket = require('../util/pocket');
 const a = require('../util/audio');
 const sampler = require('../util/audio/sources/sampler');
 
+let reverb = a.connect(a.create('reverb', {
+	on: false,
+	wet: 0.1,
+	dry: 0.9
+}), a.context.destination);
+
+let vcf = a.connect(a.create('vcf', {
+	on: false,
+	type: 'lowpass',
+	cutoff: 0.64,
+	resonance: 0,
+	gain: 0
+}), reverb);
+
+const rack = {
+};
+
 const getIds = (inputs, indexes) => inputs
 	.map(inp => inp.id)
 	.filter((id, i) => indexes.indexOf(i) > -1);
@@ -20,7 +37,11 @@ const trigger = (row, col) => state => {
 		let inst = sampler.clone(pocket.get(
 			['sampleBank', sampleId]
 		));
-		inst = a.connect(inst, a.context.destination);
+		inst = a.connect(inst, state.rack.vcf.on
+			? vcf
+			: state.rack.reverb.on
+				? reverb
+				: a.context.destination);
 		a.start(inst);
 	}
 	return state;
@@ -36,6 +57,22 @@ const hook = ({state$, actions}) => {
 	let subs = [];
 
 	const {devices$, msg$} = midi.init();
+
+	// audio rack
+	subs.push(
+		state$.distinctUntilChanged(state => state.rack)
+			.subscribe(state => {
+				reverb = a.update(reverb, state.rack.reverb);
+				vcf = a.update(vcf, state.rack.vcf);
+				if (state.rack.reverb.on) {
+					vcf = a.disconnect(vcf);
+					vcf = a.connect(vcf, reverb);
+				} else {
+					vcf = a.disconnect(vcf);
+					vcf = a.connect(vcf, a.context.destination);
+				}
+			})
+	);
 
 	// midi device access
 	subs.push(
@@ -86,6 +123,16 @@ const hook = ({state$, actions}) => {
 					const row = (msg.note.number - 60 - col) / 4 +
 						(((msg.note.number - 60 - col) / 4 % 2 === 1)
 							? -1 : 1);
+					// console.log((msg.note.number - 60 - col) / 4, (msg.note.number - 60 - col) % 2, row, col);
+					actions.set(['pads', 'focused'], [
+						row, col
+					]);
+					if (state.mode === 2)
+						trigger(row, col)(state);
+				}
+				if (msg.channel === 11 && msg.state === 'noteOn') {
+					const col = (msg.note.number - 55) % 10;
+					const row = (msg.note.number - 55 - col) / 10;
 					// console.log((msg.note.number - 60 - col) / 4, (msg.note.number - 60 - col) % 2, row, col);
 					actions.set(['pads', 'focused'], [
 						row, col

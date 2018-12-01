@@ -6,7 +6,8 @@ const $ = Rx.Observable;
 const WaveSurfer = require('wavesurfer.js');
 // window.WaveSurfer = WaveSurfer;
 const TimelinePlugin = require('wavesurfer.js/dist/plugin/wavesurfer.timeline.min.js');
-const RegionsPlugin = require('wavesurfer.js/dist/plugin/wavesurfer.regions.min.js');
+const ExtWSRegionsPlugin = require('../ext/ws/regions.js').default;
+// console.log(RegionsPlugin);
 // require('wavesurfer/plugin/wavesurfer.timeline.js');
 // WaveSurfer = window.WaveSurfer;
 
@@ -24,7 +25,9 @@ const init = container => {
 				container: '#wave-timeline'
 				// deferInit: true // stop the plugin from initialising immediately
 			}),
-			RegionsPlugin.create({
+			ExtWSRegionsPlugin.create({
+				dragSelection: true,
+				singleRegion: true
 				// plugin options ...
 			})
 		]
