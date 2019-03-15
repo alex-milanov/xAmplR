@@ -2757,29 +2757,50 @@ a, button {
             vertical-align: middle;
             height: calc(1 * 40px);
             width: calc(1 * 40px); }
-  #ui .waveform {
+  #ui #waveditor {
     position: absolute;
     top: calc(1.5 * 40px + 14px);
-    right: 8px;
-    box-shadow: inset 0px 0px 32px #111319, 0px 0px 3px rgba(143, 165, 239, 0.7);
-    background: rgba(143, 165, 239, 0.8);
-    border-radius: 4px;
-    width: calc((100% - 4 * 116px) / 2 - 14px); }
-    #ui .waveform #waveform {
-      width: 100%;
+    right: 0px;
+    width: calc((100% - 4 * 116px) / 2 - 6px); }
+    #ui #waveditor #waveform {
+      width: calc(100% - 42px);
       height: 128px;
-      border-radius: 8px; }
-      #ui .waveform #waveform > wave {
+      box-shadow: inset 0px 0px 32px #111319, 0px 0px 3px rgba(143, 165, 239, 0.7);
+      background: rgba(143, 165, 239, 0.8);
+      border-radius: 4px; }
+      #ui #waveditor #waveform > wave {
         border-radius: 8px; }
-    #ui .waveform #wave-timeline {
+    #ui #waveditor #wave-timeline {
       position: absolute;
       bottom: 4px;
       left: 0px;
-      width: 100%;
+      width: calc(100% - 42px);
       background: rgba(181, 187, 204, 0.3);
       pointer-events: none;
       opacity: 0.3; }
-    #ui .waveform button {
+    #ui #waveditor #tools {
+      position: absolute;
+      top: 0px;
+      right: 4px;
+      width: 38px;
+      height: 100%; }
+      #ui #waveditor #tools button {
+        margin: 0px;
+        padding: 0px;
+        display: inline-block;
+        box-sizing: border-box;
+        height: 32px;
+        line-height: 32px;
+        width: 38px;
+        border: 0px;
+        background: 0px;
+        color: #b5bbcc;
+        text-align: center;
+        outline: none;
+        opacity: 0.6; }
+        #ui #waveditor #tools button:hover {
+          opacity: 1; }
+    #ui #waveditor > button {
       margin: 0px;
       padding: 0px;
       display: inline-block;
@@ -2789,7 +2810,7 @@ a, button {
       width: 64px;
       position: absolute;
       top: 50%;
-      left: 50%;
+      left: calc(50% - 21px);
       margin-top: -32px;
       margin-left: -32px;
       z-index: 99;
@@ -2801,9 +2822,9 @@ a, button {
       text-align: center;
       opacity: 0;
       transition: .3s; }
-      #ui .waveform button i.fa-play {
+      #ui #waveditor > button i.fa-play {
         margin-left: 5px; }
-    #ui .waveform:hover button {
+    #ui #waveditor:hover > button {
       opacity: 0.4; }
   #ui #board {
     position: absolute;
@@ -2923,7 +2944,7 @@ a, button {
             width: auto; }
           #ui #board #board-samples li.selected .author, #ui #board #board-samples li.selected .license, #ui #board #board-samples li.selected .duration {
             display: none; }
-        #ui #board #board-samples li button {
+        #ui #board #board-samples li button, #ui #board #board-samples li .controls > a {
           margin: 0px;
           padding: 0px;
           display: inline-block;
@@ -2940,10 +2961,10 @@ a, button {
           transition: .3s;
           font-size: 1.6em;
           opacity: 0.8; }
-          #ui #board #board-samples li button:hover {
+          #ui #board #board-samples li button:hover, #ui #board #board-samples li .controls > a:hover {
             color: #b5bbcc;
             opacity: 1; }
-          #ui #board #board-samples li button.full {
+          #ui #board #board-samples li button.full, #ui #board #board-samples li .controls > a.full {
             width: 100%;
             font-size: 1.2em;
             text-align: center; }
@@ -2988,7 +3009,7 @@ a, button {
             background-color: rgba(74, 83, 107, 0.7); }
   #ui #rack {
     position: absolute;
-    top: calc(1.5 * 40px + 24px + 128px);
+    top: calc(1.5 * 40px + 23px + 128px);
     right: 8px;
     color: #b5bbcc;
     width: calc((100% - 4 * 116px) / 2 - 14px); }

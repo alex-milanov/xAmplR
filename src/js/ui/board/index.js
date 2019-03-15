@@ -88,7 +88,13 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 							click: ev => actions.pads.load(sample, sample.sound),
 							touchstart: ev => actions.pads.load(sample, sample.sound)
 						}
-					}, i('.fa.fa-plus'))
+					}, i('.fa.fa-plus')),
+					a({
+						attrs: {
+							href: sample.sound,
+							target: '_blank'
+						}
+					}, i('.fa.fa-download'))
 				])
 			])),
 		li(button(`.full`, {

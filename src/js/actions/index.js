@@ -30,7 +30,6 @@ const initial = {
 	rack: {
 		vcf: {
 			on: false,
-			expanded: true,
 			type: 'lowpass',
 			cutoff: 0.64,
 			resonance: 0,

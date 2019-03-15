@@ -10,19 +10,12 @@ const header = require('./header');
 const board = require('./board');
 const pads = require('./pads');
 const rack = require('./rack');
+const waveditor = require('./waveditor');
 // const counter = require('./counter');
 
 module.exports = ({state, actions}) => section('#ui', [
 	header({state, actions}),
-	section('.waveform', [
-		div('#wave-timeline'),
-		div('#waveform'),
-		button({
-			on: {
-				click: () => actions.toggle(['session', 'playing'])
-			}
-		}, i(`.fa.fa-${state.session.playing ? 'pause' : 'play'}`))
-	]),
+	waveditor({state, actions}),
 	board({state, actions}),
 	pads({state, actions}),
 	rack({state, actions})
