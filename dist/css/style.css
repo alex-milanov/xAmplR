@@ -2751,6 +2751,8 @@ a, button {
           outline: none; }
           #ui header ul li button.selected {
             background: rgba(181, 187, 204, 0.2); }
+          #ui header ul li button.recording {
+            color: #ff3333; }
           #ui header ul li button:hover {
             background: rgba(181, 187, 204, 0.3); }
           #ui header ul li button img {

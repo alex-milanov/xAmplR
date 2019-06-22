@@ -72,7 +72,9 @@ const hook = ({state$, actions}) => {
 		)
 		.withLatestFrom(state$, (ev, state) => ({ev, state}))
 		.subscribe(({ev, state}) => {
-			if (ev.key > 0 && ev.key < 4) {
+			if (ev.key === 'r') {
+				actions.toggle('recording');
+			} else if (ev.key > 0 && ev.key < 4) {
 				actions.set('mode', parseInt(ev.key, 10) - 1);
 			} else {
 				let pos = getIndex(ev.key);

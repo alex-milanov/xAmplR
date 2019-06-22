@@ -36,11 +36,11 @@ module.exports = ({state, actions}) => header([
 	ul('.right', [
 		li(button({
 			on: {
-				click: () => actions.set('sttMic', true)
+				click: () => actions.toggle('recording')
 			},
 			class: {
-				selected: state.sttMic
+				recording: state.recording
 			}
-		}, i('.fa.fa-volume-control-phone')))
+		}, i('.fa.fa-microphone')))
 	])
 ]);

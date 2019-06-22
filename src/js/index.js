@@ -15,6 +15,9 @@ let ui = require('./ui');
 let actions$;
 const state$ = new Rx.BehaviorSubject();
 // services
+// audio
+let audio = require('./services/audio.js');
+actions = app.attach(actions, 'audio', audio.actions);
 // wavesurfer
 let wavesurfer = require('./services/wavesurfer.js');
 // samples - audiocommons
@@ -27,7 +30,7 @@ actions = app.attach(actions, 'pads', pads.actions);
 let midi = require('./services/midi.js');
 actions = app.attach(actions, 'midi', midi.actions);
 // stt - speach to text
-let stt = require('./services/stt.js');
+// let stt = require('./services/stt.js');
 // control
 let control = require('./services/control.js');
 actions = app.attach(actions, 'control', control.actions);
@@ -51,6 +54,19 @@ if (module.hot) {
 		actions.stream.onNext(state => state);
 	});
 	// services
+	// audio
+	module.hot.accept("./services/audio.js", function() {
+		audio.unhook();
+		audio = require('./services/audio.js');
+		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'audio', audio.actions);
+		actions = app.attach(actions, 'pads', pads.actions);
+		actions = app.attach(actions, 'samples', samples.actions);
+		actions = app.attach(actions, 'midi', midi.actions);
+		actions = app.attach(actions, 'control', control.actions);
+		audio.hook({state$, actions});
+		actions.stream.onNext(state => state);
+	});
 	// wavesurfer
 	module.hot.accept("./services/wavesurfer.js", function() {
 		wavesurfer.unhook();
@@ -63,6 +79,7 @@ if (module.hot) {
 		samples.unhook();
 		samples = require('./services/samples.js');
 		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'audio', audio.actions);
 		actions = app.attach(actions, 'pads', pads.actions);
 		actions = app.attach(actions, 'samples', samples.actions);
 		actions = app.attach(actions, 'midi', midi.actions);
@@ -75,6 +92,7 @@ if (module.hot) {
 		pads.unhook();
 		pads = require('./services/pads.js');
 		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'audio', audio.actions);
 		actions = app.attach(actions, 'pads', pads.actions);
 		actions = app.attach(actions, 'samples', samples.actions);
 		actions = app.attach(actions, 'midi', midi.actions);
@@ -87,6 +105,7 @@ if (module.hot) {
 		midi.unhook();
 		midi = require('./services/midi.js');
 		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'audio', audio.actions);
 		actions = app.attach(actions, 'pads', pads.actions);
 		actions = app.attach(actions, 'samples', samples.actions);
 		actions = app.attach(actions, 'midi', midi.actions);
@@ -95,17 +114,18 @@ if (module.hot) {
 		actions.stream.onNext(state => state);
 	});
 	// stt
-	module.hot.accept("./services/stt.js", function() {
-		stt.unhook();
-		stt = require('./services/stt.js');
-		stt.hook({state$, actions});
-		actions.stream.onNext(state => state);
-	});
+	// module.hot.accept("./services/stt.js", function() {
+	// 	stt.unhook();
+	// 	stt = require('./services/stt.js');
+	// 	stt.hook({state$, actions});
+	// 	actions.stream.onNext(state => state);
+	// });
 	// control
 	module.hot.accept("./services/control.js", function() {
 		control.unhook();
 		control = require('./services/control.js');
 		actions = app.adapt(require('./actions'));
+		actions = app.attach(actions, 'audio', audio.actions);
 		actions = app.attach(actions, 'pads', pads.actions);
 		actions = app.attach(actions, 'samples', samples.actions);
 		actions = app.attach(actions, 'midi', midi.actions);
@@ -133,11 +153,12 @@ actions$
 const ui$ = state$.map(state => ui({state, actions}));
 vdom.patchStream(ui$, '#ui');
 
+audio.hook({state$, actions});
 wavesurfer.hook({state$, actions});
 samples.hook({state$, actions});
 pads.hook({state$, actions});
 midi.hook({state$, actions});
-stt.hook({state$, actions});
+// stt.hook({state$, actions});
 control.hook({state$, actions});
 
 // livereload impl.
