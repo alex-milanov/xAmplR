@@ -1,0 +1,17 @@
+// traktor
+if (msg.channel === 13 && msg.state === 'controller' && msg.value === 1) {
+	if (msg.controller >= 10 && msg.controller <= 26) {
+		const col = (msg.controller - 10) % 4;
+		const row = ((msg.controller - 10 - col) / 4);
+		let sampleId = obj.sub(state, ['pads', 'map', row, col]);
+		// let inst;
+		actions.set(['pads', 'focused'], [
+			row, col
+		]);
+		if (state.mode === 2)
+			trigger(row, col)(state);
+	}
+	if (msg.controller >= 37 && msg.controller <= 39) {
+		actions.set('mode', msg.controller - 37);
+	}
+}

@@ -87,7 +87,8 @@ const hook = ({state$, actions}) => {
 		navigator.mediaDevices.getUserMedia({audio: {deviceId}}));
 
 	state$.distinctUntilChanged(state => state.recording)
-		.flatMap(state => getStream().map(stream => ({state, stream})))
+		.map(state => (console.log(state.audio.deviceInputs[0]), state))
+		.flatMap(state => getStream(state.audio.deviceInputs[0]).map(stream => ({state, stream})))
 		.subscribe(({state, stream}) => {
 			if (state.recording) {
 				// console.log(channel, rec.record, source[channel].stream);

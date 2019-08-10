@@ -1,17 +1,24 @@
+
+// $header-height: calc(1.5 * #{$line-height})
+$header-height: calc(1 * #{$line-height})
+
 header
-	+header-height(calc(1.5 * #{$line-height}))
+	+header-height($header-height)
 	position: absolute
+	// padding-bottom: 4px
 	top: 6px
 	left: 8px
 	right: 8px
 	text-align: center
 	color: $color-blue-light
 	// text-shadow: 0px 0px 3px $color-blue-light
-	background-color: rgba(#4a536b, 0.2)
-	box-shadow: 0px 0px 3px rgba($color-blue-light, 0.5), inset 0px -5px 3px rgba($color-blue-light, 0.1)
+	background-color: rgba(#4a536b, 0.4)
+	box-shadow: 0px 0px 1px rgba($color-blue-light, 0.5), inset 0px -3px 1px rgba($color-blue-light, 0.1)
 	border-radius: 4px
 	h1
 		+reset
+		float: left
+		// margin-left: 18px
 		position: absolute
 		top: 0px
 		left: 0px
@@ -19,19 +26,37 @@ header
 		text-align: center
 		font-family: 'Fascinate Inline'
 		font-weight: lighter
-		font-size: 2.2em
+		font-size: 1.6em
 		pointer-events: none
 		text-shadow: 0px 0px 15px #111319
+	.center
+		position: absolute
+		top: 0px
+		left: 50%
+		transform: translateX(-50%)
 	ul
-		+header-height(calc(1.5 * #{$line-height}))
+		+header-height($header-height)
 		list-style: none
 		li
-			+header-height(calc(1.5 * #{$line-height}))
+			+header-height($header-height)
 			float: left
+			select, input
+				+header-height(calc(#{$header-height} * 0.7))
+				vertical-align: middle
+				margin: calc(#{$header-height} * 0.15) 4px
+				float: left
+				border: 0px
+				border-radius: 8px
+				padding: 0px 8px
+				font-size: 0.8em
+				outline: none
+				color: $color-blue-light
+				background-color: darken(#4a536b, 25)
+				box-shadow: inset 1px 1px 3px darken(#4a536b, 30)
 			button
-				+header-height(calc(1.5 * #{$line-height}))
-				width: calc(1.5 * #{$line-height})
-				font-size: 1.8em
+				+header-height($header-height)
+				width: $header-height
+				font-size: 1.4em
 				background: none
 				border: 0px
 				color: $color-blue-light
@@ -46,5 +71,5 @@ header
 					background: rgba($color-blue-light, 0.3)
 				img
 					vertical-align: middle
-					height: calc(1 * #{$line-height})
-					width: calc(1 * #{$line-height})
+					height: calc(0.6 * #{$line-height})
+					width: calc(0.6 * #{$line-height})

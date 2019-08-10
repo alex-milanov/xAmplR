@@ -2692,22 +2692,23 @@ a, button {
     padding: 0px;
     display: inline-block;
     box-sizing: border-box;
-    height: calc(1.5 * 40px);
-    line-height: calc(1.5 * 40px);
+    height: calc(1 * 40px);
+    line-height: calc(1 * 40px);
     position: absolute;
     top: 6px;
     left: 8px;
     right: 8px;
     text-align: center;
     color: #b5bbcc;
-    background-color: rgba(74, 83, 107, 0.2);
-    box-shadow: 0px 0px 3px rgba(181, 187, 204, 0.5), inset 0px -5px 3px rgba(181, 187, 204, 0.1);
+    background-color: rgba(74, 83, 107, 0.4);
+    box-shadow: 0px 0px 1px rgba(181, 187, 204, 0.5), inset 0px -3px 1px rgba(181, 187, 204, 0.1);
     border-radius: 4px; }
     #ui header h1 {
       margin: 0px;
       padding: 0px;
       display: inline-block;
       box-sizing: border-box;
+      float: left;
       position: absolute;
       top: 0px;
       left: 0px;
@@ -2715,34 +2716,57 @@ a, button {
       text-align: center;
       font-family: 'Fascinate Inline';
       font-weight: lighter;
-      font-size: 2.2em;
+      font-size: 1.6em;
       pointer-events: none;
       text-shadow: 0px 0px 15px #111319; }
+    #ui header .center {
+      position: absolute;
+      top: 0px;
+      left: 50%;
+      transform: translateX(-50%); }
     #ui header ul {
       margin: 0px;
       padding: 0px;
       display: inline-block;
       box-sizing: border-box;
-      height: calc(1.5 * 40px);
-      line-height: calc(1.5 * 40px);
+      height: calc(1 * 40px);
+      line-height: calc(1 * 40px);
       list-style: none; }
       #ui header ul li {
         margin: 0px;
         padding: 0px;
         display: inline-block;
         box-sizing: border-box;
-        height: calc(1.5 * 40px);
-        line-height: calc(1.5 * 40px);
+        height: calc(1 * 40px);
+        line-height: calc(1 * 40px);
         float: left; }
+        #ui header ul li select, #ui header ul li input {
+          margin: 0px;
+          padding: 0px;
+          display: inline-block;
+          box-sizing: border-box;
+          height: calc(calc(1 * 40px) * 0.7);
+          line-height: calc(calc(1 * 40px) * 0.7);
+          vertical-align: middle;
+          margin: calc(calc(1 * 40px) * 0.15) 4px;
+          float: left;
+          border: 0px;
+          border-radius: 8px;
+          padding: 0px 8px;
+          font-size: 0.8em;
+          outline: none;
+          color: #b5bbcc;
+          background-color: #161920;
+          box-shadow: inset 1px 1px 3px #0b0d11; }
         #ui header ul li button {
           margin: 0px;
           padding: 0px;
           display: inline-block;
           box-sizing: border-box;
-          height: calc(1.5 * 40px);
-          line-height: calc(1.5 * 40px);
-          width: calc(1.5 * 40px);
-          font-size: 1.8em;
+          height: calc(1 * 40px);
+          line-height: calc(1 * 40px);
+          width: calc(1 * 40px);
+          font-size: 1.4em;
           background: none;
           border: 0px;
           color: #b5bbcc;
@@ -2757,11 +2781,11 @@ a, button {
             background: rgba(181, 187, 204, 0.3); }
           #ui header ul li button img {
             vertical-align: middle;
-            height: calc(1 * 40px);
-            width: calc(1 * 40px); }
+            height: calc(0.6 * 40px);
+            width: calc(0.6 * 40px); }
   #ui #waveditor {
     position: absolute;
-    top: calc(1.5 * 40px + 14px);
+    top: calc(1 * calc(1 * 40px) + 14px);
     right: 0px;
     width: calc((100% - 4 * 116px) / 2 - 6px); }
     #ui #waveditor #waveform {
@@ -2830,7 +2854,7 @@ a, button {
       opacity: 0.4; }
   #ui #board {
     position: absolute;
-    top: calc(1.5 * 40px + 12px);
+    top: calc(1 * calc(1 * 40px) + 12px);
     bottom: 0px;
     left: 8px;
     width: calc((100% - 4 * 116px) / 2 - 12px); }
@@ -2972,10 +2996,10 @@ a, button {
             text-align: center; }
   #ui #pads {
     position: absolute;
-    top: calc(1.5 * 40px + 10px);
+    top: calc(1 * calc(1 * 40px) + 10px);
     left: calc((100% - 4 * 116px) / 2);
     width: calc(4 * 116px);
-    height: calc(4 * 116px); }
+    height: calc(4 * 116px * 0.9); }
     #ui #pads .rows {
       height: 100%;
       width: 100%; }
@@ -2997,7 +3021,7 @@ a, button {
           border-radius: 4px;
           background-color: rgba(74, 83, 107, 0.4);
           outline: none;
-          box-shadow: 0px 0px 3px rgba(181, 187, 204, 0.5), inset 0px -5px 3px rgba(181, 187, 204, 0.1);
+          box-shadow: 0px 0px 2px rgba(181, 187, 204, 0.5), inset 0px -4px 1px rgba(181, 187, 204, 0.1);
           transition: box-shadow .3s, background-color .1s; }
           #ui #pads .rows .cols .pad.assigned {
             background-color: rgba(74, 83, 107, 0.6);
@@ -3006,12 +3030,12 @@ a, button {
             background-size: 116px 116px; }
           #ui #pads .rows .cols .pad.focused {
             background-color: rgba(74, 83, 107, 0.6);
-            box-shadow: 0px 0px 5px rgba(181, 187, 204, 0.5), inset 0px -1px 3px 1px rgba(181, 187, 204, 0.3); }
+            box-shadow: 0px 0px 2px rgba(181, 187, 204, 0.5), inset 0px 0px 3px rgba(181, 187, 204, 0.3); }
           #ui #pads .rows .cols .pad:active, #ui #pads .rows .cols .pad.triggered {
             background-color: rgba(74, 83, 107, 0.7); }
   #ui #rack {
     position: absolute;
-    top: calc(1.5 * 40px + 23px + 128px);
+    top: calc(1 * calc(1 * 40px) + 23px + 128px);
     right: 8px;
     color: #b5bbcc;
     width: calc((100% - 4 * 116px) / 2 - 14px); }

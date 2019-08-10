@@ -75,7 +75,7 @@ const hook = ({state$, actions}) => {
 			if (ev.key === 'r') {
 				actions.toggle('recording');
 			} else if (ev.key > 0 && ev.key < 4) {
-				actions.set('mode', parseInt(ev.key, 10) - 1);
+				actions.set('mode', parseInt(ev.key, 10));
 			} else {
 				let pos = getIndex(ev.key);
 				console.log(ev.key, ev.target, pos);

@@ -10,6 +10,17 @@ const pocket = require('../util/pocket');
 const a = require('../util/audio');
 const sampler = require('../util/audio/sources/sampler');
 
+const initial = {
+	device: -1,
+	devices: [],
+	channel: 10,
+	scheme: 'mpc500',
+	schemes: {
+		mpc500: require('./maps/mpc500.json'),
+		lpd8: require('./maps/lpd8.json')
+	}
+};
+
 let reverb = a.connect(a.create('reverb', {
 	on: false,
 	wet: 0.1,
@@ -47,16 +58,35 @@ const trigger = (row, col) => state => {
 	return state;
 };
 
+const connect = devices => state => obj.patch(state, 'midi', {
+	devices
+});
+
 let actions = {
-	initial: {},
+	initial,
+	connect,
 	trigger
 };
+
+const locateMap = (map, value) => map.reduce((pos, list, row) =>
+	list.find(v => v === value) ? {row, col: list.findIndex(v => v === value)} : pos,
+	{row: -1, col: -1}
+);
 
 let unhook = () => {};
 const hook = ({state$, actions}) => {
 	let subs = [];
 
 	const {devices$, msg$} = midi.init();
+	const parsedMidiMsg$ = msg$
+		.map(raw => ({msg: midi.parseMidiMsg(raw.msg), raw}))
+		// .map(data => (console.log(data), data))
+		.share();
+
+	// midi device access
+	subs.push(
+		devices$.subscribe(data => actions.midi.connect(data))
+	);
 
 	// audio rack
 	subs.push(
@@ -74,20 +104,10 @@ const hook = ({state$, actions}) => {
 			})
 	);
 
-	// midi device access
-	subs.push(
-		devices$.subscribe(data => actions.midiMap.connect(data))
-	);
-
-	const parsedMidiMsg$ = msg$
-		.map(raw => ({msg: midi.parseMidiMsg(raw.msg), raw}))
-		// .map(data => (console.log(data), data))
-		.share();
-
 	// midi messages
 	subs.push(
 		parsedMidiMsg$
-			.map(midiData => (console.log({midiData}), midiData))
+			// .map(midiData => (console.log({midiData}), midiData))
 			// .filter(({msg}) => ['noteOn', 'noteOff'].indexOf(msg.state) > -1)
 			.filter(({msg}) =>
 				msg.state === 'controller' || msg.state === 'noteOn'
@@ -100,39 +120,18 @@ const hook = ({state$, actions}) => {
 			// 	) > -1
 			// ))
 			.subscribe(({raw, msg, state}) => {
-				// console.log(state.midiMap.devices.inputs, raw.input);
-				// traktor
-				if (msg.channel === 13 && msg.state === 'controller' && msg.value === 1) {
-					if (msg.controller >= 10 && msg.controller <= 26) {
-						const col = (msg.controller - 10) % 4;
-						const row = ((msg.controller - 10 - col) / 4);
-						let sampleId = obj.sub(state, ['pads', 'map', row, col]);
-						// let inst;
-						actions.set(['pads', 'focused'], [
-							row, col
-						]);
-						if (state.mode === 2)
-							trigger(row, col)(state);
-					}
-					if (msg.controller >= 37 && msg.controller <= 39) {
-						actions.set('mode', msg.controller - 37);
-					}
-				}
-				if (msg.channel === 10 && msg.state === 'noteOn') {
-					const col = (msg.note.number - 60) % 4;
-					const row = (msg.note.number - 60 - col) / 4 +
-						(((msg.note.number - 60 - col) / 4 % 2 === 1)
-							? -1 : 1);
-					// console.log((msg.note.number - 60 - col) / 4, (msg.note.number - 60 - col) % 2, row, col);
-					actions.set(['pads', 'focused'], [
-						row, col
-					]);
-					if (state.mode === 2)
-						trigger(row, col)(state);
-				}
-				if (msg.channel === 11 && msg.state === 'noteOn') {
-					const col = (msg.note.number - 55) % 10;
-					const row = (msg.note.number - 55 - col) / 10;
+				console.log(state.midi.device, raw.input.id, msg.note.number, msg.state);
+				if (
+					(raw.input.id === state.midi.device || state.midi.device === -1)
+					&& msg.channel === state.midi.channel
+					&& msg.state === 'noteOn'
+				) {
+					const {row, col} = locateMap(
+						state.midi.schemes[state.midi.scheme],
+						msg.note.number
+					);
+					console.log(row, col);
+					if (row === -1 || col === -1) return;
 					// console.log((msg.note.number - 60 - col) / 4, (msg.note.number - 60 - col) % 2, row, col);
 					actions.set(['pads', 'focused'], [
 						row, col

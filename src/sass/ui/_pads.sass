@@ -1,9 +1,9 @@
 #pads
 	position: absolute
-	top: calc(1.5 * #{$line-height} + 10px)
+	top: calc(1 * #{$header-height} + 10px)
 	left: calc((100% - 4 * #{$pad-width}) / 2)
 	width: calc(4 * #{$pad-width})
-	height: calc(4 * #{$pad-width})
+	height: calc(4 * #{$pad-width} * 0.9)
 	.rows
 		height: 100%
 		width: 100%
@@ -29,7 +29,7 @@
 				outline: none
 				// box-shadow: inset 0px 0px 16px $color-blue-light, 0px 0px 3px $color-blue-light
 				// box-shadow: 0px 0px 3px rgba(#7182af, 0.7), inset 0px -5px 3px rgba(#7182af, 0.3)
-				box-shadow: 0px 0px 3px rgba($color-blue-light, 0.5), inset 0px -5px 3px rgba($color-blue-light, 0.1)
+				box-shadow: 0px 0px 2px rgba($color-blue-light, 0.5), inset 0px -4px 1px rgba($color-blue-light, 0.1)
 				transition: box-shadow .3s, background-color .1s
 				&.assigned
 					// background-color: rgba($color-blue-light, 0.3)
@@ -41,7 +41,7 @@
 					background-color: rgba(#4a536b, 0.6)
 					// background: rgba($color-blue-light, 0.3)
 					// box-shadow: inset 0px 0px 16px $color-blue-light, 0px 0px 1px 5px rgba($color-blue-light, 0.3), 0px 0px 3px $color-blue-light
-					box-shadow: 0px 0px 5px rgba($color-blue-light, 0.5), inset 0px -1px 3px 1px rgba($color-blue-light, 0.3)
+					box-shadow: 0px 0px 2px rgba($color-blue-light, 0.5), inset 0px 0px 3px rgba($color-blue-light, 0.3)
 				&:active, &.triggered
 					// background-color: rgba(#17f, 0.3)
 					background-color: rgba(#4a536b, 0.7)
