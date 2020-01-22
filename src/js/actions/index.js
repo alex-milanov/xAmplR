@@ -8,7 +8,7 @@ const midiMap = require('./midi-map');
 
 // initial
 const initial = {
-	mode: 1,
+	mode: 2,
 	stt: false,
 	sttMic: false,
 	query: '',

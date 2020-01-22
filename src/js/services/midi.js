@@ -45,15 +45,22 @@ const getIds = (inputs, indexes) => inputs
 const trigger = (row, col) => state => {
 	let sampleId = obj.sub(state, ['pads', 'map', row, col, 'id']);
 	if (sampleId) {
-		let inst = sampler.clone(pocket.get(
+		let inst = pocket.get(
 			['sampleBank', sampleId]
-		));
+		);
 		inst = a.connect(inst, state.rack.vcf.on
 			? vcf
 			: state.rack.reverb.on
 				? reverb
 				: a.context.destination);
 		a.start(inst);
+		let newInst = sampler.clone(inst);
+		newInst = a.connect(newInst, state.rack.vcf.on
+			? vcf
+			: state.rack.reverb.on
+				? reverb
+				: a.context.destination);
+		pocket.put(['sampleBank', sampleId], newInst);
 	}
 	return state;
 };
