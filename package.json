@@ -48,7 +48,7 @@
     "eslint-config-google": "^0.6.0",
     "fs-extra": "^1.0.0",
     "livereload": "^0.6.0",
-    "node-sass": "^4.1.1",
+    "node-sass": "^7.0.0",
     "node-serve": "0.0.3",
     "nodemon": "^1.19.1",
     "watchify": "^3.8.0"
