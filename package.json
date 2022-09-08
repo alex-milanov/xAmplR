@@ -27,7 +27,7 @@
     "font-awesome": "^4.7.0",
     "iblokz-data": "^1.2.0",
     "iblokz-snabbdom-helpers": "^1.2.0",
-    "jszip": "^3.1.5",
+    "jszip": "^3.7.0",
     "raf": "^3.4.1",
     "rx": "^4.1.0",
     "snabbdom": "^0.5.4",
