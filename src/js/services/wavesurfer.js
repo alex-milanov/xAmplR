@@ -32,6 +32,9 @@ const init = container => {
 			})
 		]
 	});
+
+	// wavesurfer.on('region-updated', ev => console.log('region updated', ev))
+
 	// wavesurfer.load('assets/LatinEthnoElektroGroove.mp3');
 	return wavesurfer;
 };
@@ -54,15 +57,26 @@ const hook = ({state$, actions}) => {
 		.map(() => document.querySelector('#waveform'))
 		.distinctUntilChanged(el => el)
 		.filter(el => el)
-		.map(init);
+		.map(init)
+		.share();
 
 	let sampleChange$ = state$
 		.distinctUntilChanged(state =>
-			state.pads.focused.toString() +
-				' ' + obj.sub(state.pads, ['map', ...state.pads.focused, 'id'])
+			JSON.stringify(state.pads.focused) +
+			JSON.stringify(obj.sub(state.pads, ['map', ...state.pads.focused]))
 		)
 		.map(state => (['id', obj.sub(state.pads.map, [...state.pads.focused, 'id'])]))
-		.startWith((['url', 'assets/LatinEthnoElektroGroove.mp3']));
+		
+
+	let regionChanges = wavesurfer$
+		.flatMap(ws => $.create(obs =>
+				ws.on('region-updated', ev => obs.onNext(ev))
+		));
+
+	regionChanges.subscribe(ev => (
+		console.log('region updated', [ev.start, ev.end]),
+		actions.waveEditor.updateRegion(ev)
+	));
 
 	wavesurfer$
 		.flatMap(wavesurfer =>

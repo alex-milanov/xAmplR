@@ -42,13 +42,41 @@ const load = (sample = {
 	}))
 	.map(({sample, node}) => (
 		pocket.put(['sampleBank', sample.id], node),
-		state => obj.patch(state, ['pads', 'map', ...state.pads.focused], sample)
+		state => obj.patch(state, ['pads', 'map', ...state.pads.focused], {
+			...sample,
+			updated: new Date()
+		})
 	));
+
+// uuid, {start, end}
+const crop = (id, {start, end}) =>
+	$.just(pocket.get(['sampleBank', id]))
+		.map(node => node.output.buffer)
+		.map(buffer => (
+			console.log('in buffer', buffer instanceof AudioBuffer, start, end, buffer),
+			bufferUtils.slice(buffer, start * buffer.sampleRate, end * buffer.sampleRate)
+		))
+		.map(buffer => (
+			console.log('out buffer', buffer instanceof AudioBuffer, buffer),
+			buffer
+		))
+		.map(buffer => ({
+			sample: {id, image: drawBuffer(buffer)},
+			node: sampler.create(null, buffer)
+		}))
+		.map(({sample, node}) => (
+			pocket.put(['sampleBank', sample.id], node),
+			state => obj.patch(state, ['pads', 'map', ...state.pads.focused], {
+				...sample,
+				updated: new Date()
+			})
+		));
 
 const actions = {
 	initial,
 	connect,
-	load
+	load,
+	crop
 };
 
 const drawBuffer = buffer => {

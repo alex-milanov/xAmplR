@@ -17,9 +17,16 @@ module.exports = ({state, actions}) => section('#waveditor', [
 		}
 	}, i(`.fa.fa-${state.session.playing ? 'pause' : 'play'}`)),
 	div('#tools', [
-		button('.fa.fa-microphone'),
-		button('.fa.fa-scissors'),
+		button('.fa.fa-crop', {
+			on: {
+				click: () => actions.audio.crop(
+					obj.sub(state, ['pads', 'map', ...state.pads.focused, 'id']),
+					state.waveEditor.region
+				)
+			}
+		}),
 		button('.fa.fa-exchange'),
+		button('.fa.fa-area-chart'),
 		button('.fa.fa-times')
 	])
 ]);

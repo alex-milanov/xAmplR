@@ -26,16 +26,30 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 			}
 		}
 	}, [
-		input(`[type="hidden"][name="page"][value=1]`),
-		input(`#board-search-pattern[name="pattern"][placeholder="Query"]`, {
-			attrs: {
-				value: state.samples.query.pattern
-			}
-		}),
-		select(`[name="source"]`, ['freesound', 'jamendo', 'europeana'].map(
-			s => option(`[value="${s}"]`, s)
-		)),
-		button('Search')
+		div([
+			select(`[name="source"]`, ['freesound', 'splice'].map(
+				s => option(`[value="${s}"]`, s)
+			)),
+			input(`[name="api-key"][placeholder="Api Key"]`, {
+				attrs: {
+					value: state.samples?.auth?.key
+				}
+			}),
+			a(`[target="_blank"]`, {
+				attrs: {
+					href: `https://freesound.org/apiv2/oauth2/authorize/?client_id=${process.env.FS_CLIENT_ID}&response_type=code`
+				}
+			}, i('.fa.fa-external-link'))
+		]),
+		div([
+			input(`[type="hidden"][name="page"][value=1]`),
+			input(`#board-search-pattern[name="pattern"][placeholder="Query"]`, {
+				attrs: {
+					value: state.samples.query.pattern
+				}
+			}),
+			button('Search')
+		])
 	]),
 	(state.samples.list.length > 0) ? ul('#board-samples', [].concat(
 		state.samples.list.map((sample, index) =>
@@ -54,9 +68,18 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 				span('.duration', `${(sample.duration / 1000).toFixed(2)} s`),
 				a(`.license[target="_blank"][href="${sample.license}"]`,
 					fn.pipe(
-						() => sample.license.replace('http://creativecommons.org/', ''),
+						() => sample.license.replace(/http(s)?\:\/\/creativecommons.org\//, ''),
 						license => obj.switch(license, {
 							'default': license,
+							'licenses/by-nc/4.0/': [
+								i(`.cc.cc-cc.cc-2x`),
+								i(`.cc.cc-by.cc-2x`),
+								i(`.cc.cc-nc.cc-2x`)
+							],
+							'licenses/by/4.0/': [
+								i(`.cc.cc-cc.cc-2x`),
+								i(`.cc.cc-by.cc-2x`)
+							],
 							'licenses/by/3.0/': [
 								i(`.cc.cc-cc.cc-2x`),
 								i(`.cc.cc-by.cc-2x`)

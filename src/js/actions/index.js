@@ -5,6 +5,7 @@ const {obj, arr} = require('iblokz-data');
 // namespaces=
 const counter = require('./counter');
 const midiMap = require('./midi-map');
+const waveEditor = require('./wave-editor');
 
 // initial
 const initial = {
@@ -58,6 +59,7 @@ module.exports = {
 	initial,
 	// namespaces
 	midiMap,
+	waveEditor,
 	// actions
 	set,
 	toggle,

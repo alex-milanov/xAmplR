@@ -7,36 +7,34 @@
 	#board-search
 		+header-height($line-height)
 		width: 100%
-		> *
+		> *, > div > *
 			+header-height($line-height)
-			float: left
 			background: rgba($color-blue-light, 0.1)
-			margin-right: 2px
 			border: 0px
 			&:first-child
 				margin-left: 0px
 			&:last-child
 				margin-right: 0px
-		input, button, label, select
+		div
+			display: flex
+			gap: 4px
+			margin: 4px 0px
+			width: 100%
+			> *
+				flex-grow: 4
+		input, button, label, select, a
 			font-size: inherit
 			padding: 0px 10px
 			color: $color-blue-light
 			outline: none
-		#board-search-pattern
-			width: calc(100% - 220px)
-		select
-			width: 112px
-		button
-			width: 104px
-			margin-right: 0px
 	#board-samples
 		+reset
 		+scrollbar(4px, $color-blue-light, 2px solid $color-blue-light)
 		margin: 2px 0px
 		display: block
 		position: absolute
-		top: $line-height
-		height: calc(100% - #{$line-height})
+		top: calc(#{$line-height} * 2 + 8px)
+		height: calc(100% - #{$line-height} * 2 - 8px)
 		overflow-y: scroll
 		width: 100%
 		list-style: none

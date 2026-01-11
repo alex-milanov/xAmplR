@@ -2,29 +2,20 @@
   "name": "xAmplR",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "source": "src/index.pug",
   "scripts": {
-    "build": "npm run build:assets && npm run build:js && npm run build:sass",
-    "build:js": "browserify -t [ babelify --global ] src/js/index.js -o dist/js/app.js --debug",
-    "build:sass": "node-sass --source-map dist/css/style.css.map --include-path=$(node bin/sass-paths.js) src/sass/style.sass dist/css/style.css",
-    "build:assets": "node bin/move-assets.js",
-    "watch": "npm run watch:js & npm run watch:sass & npm run watch:assets & npm run livereload",
-    "watch:js": "watchify -p browserify-hmr -t [ babelify --global ] src/js/index.js -o dist/js/app.js --debug",
-    "watch:sass": "nodemon -w src/sass -e sass -x 'npm run build:sass'",
-    "watch:assets": "nodemon -e jpg,jpeg,gif,png,json,md,svg,flac,ogg --watch src/assets --exec 'npm run build:assets'",
-    "livereload": "livereload dist/**/*.css -d",
-    "start": "npm run build && serve --port 3000 --path dist & npm run watch"
+    "build": "parcel build",
+    "start": "parcel"
   },
   "author": "Alex Milanov <alex@i4web.biz>",
   "license": "MIT",
   "dependencies": {
     "audio-buffer-utils": "^5.1.2",
-    "bourbon": "^4.2.7",
-    "bourbon-neat": "^1.8.0",
     "cc-icons": "github:cc-icons/cc-icons",
     "draw-wave": "^2.0.0",
     "file-saver": "^2.0.0-rc.4",
     "font-awesome": "^4.7.0",
+    "html-to-json": "^0.6.0",
     "iblokz-data": "^1.2.0",
     "iblokz-snabbdom-helpers": "^1.2.0",
     "jszip": "^3.1.5",
@@ -37,20 +28,26 @@
     "wavesurfer.js": "^2.1.0"
   },
   "devDependencies": {
-    "babel-plugin-transform-object-assign": "^6.22.0",
-    "babel-plugin-transform-object-rest-spread": "^6.26.0",
-    "babel-preset-es2015": "^6.16.0",
-    "babel-preset-stage-3": "^6.24.1",
-    "babelify": "^7.3.0",
-    "browserify": "^13.1.1",
-    "browserify-hmr": "^0.3.5",
+    "@babel/core": "^7.12.0",
+    "@parcel/config-default": "^2.12.0",
+    "@parcel/transformer-pug": "2.12.0",
+    "@parcel/transformer-sass": "2.12.0",
+    "assert": "^2.0.0",
+    "buffer": "^5.5.0||^6.0.0",
+    "dotenv": "^16.4.5",
     "eslint": "^3.12.2",
     "eslint-config-google": "^0.6.0",
-    "fs-extra": "^1.0.0",
-    "livereload": "^0.6.0",
-    "node-sass": "^4.1.1",
-    "node-serve": "0.0.3",
-    "nodemon": "^1.19.1",
-    "watchify": "^3.8.0"
-  }
+    "os-browserify": "^0.3.0",
+    "parcel": "^2.12.0",
+    "parcel-reporter-static-files-copy": "^1.5.3",
+    "parcel-resolver-ignore": "^2.2.0",
+    "process": "^0.11.10"
+  },
+  "staticFiles": {
+    "staticPath": "src/assets",
+    "staticOutPath": "assets"
+  },
+  "parcelIgnore": [
+    "/assets/.+"
+  ]
 }
