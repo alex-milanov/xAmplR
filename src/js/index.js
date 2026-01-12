@@ -160,9 +160,3 @@ pads.hook({state$, actions});
 midi.hook({state$, actions});
 // stt.hook({state$, actions});
 control.hook({state$, actions});
-
-// livereload impl.
-if (module.hot) {
-	document.write(`<script src="http://${(location.host || 'localhost').split(':')[0]}` +
-	`:35729/livereload.js?snipver=1"></script>`);
-}
