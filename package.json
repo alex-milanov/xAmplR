@@ -4,7 +4,7 @@
   "description": "",
   "source": "src/index.pug",
   "scripts": {
-    "build": "parcel build",
+    "build": "parcel build --public-url /xAmplR/",
     "start": "parcel",
     "lint": "eslint src/js --ext .js"
   },
