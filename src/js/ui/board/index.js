@@ -26,21 +26,21 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 			}
 		}
 	}, [
-		div([
-			select(`[name="source"]`, ['freesound', 'splice'].map(
-				s => option(`[value="${s}"]`, s)
-			)),
-			input(`[name="api-key"][placeholder="Api Key"]`, {
-				attrs: {
-					value: state.samples?.auth?.key
-				}
-			}),
-			a(`[target="_blank"]`, {
-				attrs: {
-					href: `https://freesound.org/apiv2/oauth2/authorize/?client_id=${process.env.FS_CLIENT_ID}&response_type=code`
-				}
-			}, i('.fa.fa-external-link'))
-		]),
+		// div([
+		// 	select(`[name="source"]`, ['freesound', 'splice'].map(
+		// 		s => option(`[value="${s}"]`, s)
+		// 	)),
+		// 	input(`[name="api-key"][placeholder="Api Key"]`, {
+		// 		attrs: {
+		// 			value: state.samples?.auth?.key
+		// 		}
+		// 	}),
+		// 	a(`[target="_blank"]`, {
+		// 		attrs: {
+		// 			href: `https://freesound.org/apiv2/oauth2/authorize/?client_id=${process.env.FS_CLIENT_ID}&response_type=code`
+		// 		}
+		// 	}, i('.fa.fa-external-link'))
+		// ]),
 		div([
 			input(`[type="hidden"][name="page"][value=1]`),
 			input(`#board-search-pattern[name="pattern"][placeholder="Query"]`, {
