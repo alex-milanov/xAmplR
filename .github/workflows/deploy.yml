@@ -20,6 +20,8 @@ concurrency:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      FS_TOKEN: ${{ secrets.FS_TOKEN }}
     
     steps:
     - name: Checkout code
