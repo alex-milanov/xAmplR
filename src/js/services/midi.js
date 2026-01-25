@@ -1,7 +1,8 @@
 'use strict';
 // lib
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable } = require('rxjs');
+const { map, share, distinctUntilChanged, filter, withLatestFrom } = require('rxjs/operators');
+const $ = Observable;
 
 const {obj} = require('iblokz-data');
 
@@ -85,10 +86,11 @@ const hook = ({state$, actions}) => {
 	let subs = [];
 
 	const {devices$, msg$} = midi.init();
-	const parsedMidiMsg$ = msg$
-		.map(raw => ({msg: midi.parseMidiMsg(raw.msg), raw}))
-		// .map(data => (console.log(data), data))
-		.share();
+	const parsedMidiMsg$ = msg$.pipe(
+		map(raw => ({msg: midi.parseMidiMsg(raw.msg), raw})),
+		// map(data => (console.log(data), data))
+		share()
+	);
 
 	// midi device access
 	subs.push(
@@ -97,7 +99,9 @@ const hook = ({state$, actions}) => {
 
 	// audio rack
 	subs.push(
-		state$.distinctUntilChanged(state => state.rack)
+		state$.pipe(
+			distinctUntilChanged(state => state.rack)
+		)
 			.subscribe(state => {
 				reverb = a.update(reverb, state.rack.reverb);
 				vcf = a.update(vcf, state.rack.vcf);
@@ -113,19 +117,20 @@ const hook = ({state$, actions}) => {
 
 	// midi messages
 	subs.push(
-		parsedMidiMsg$
-			// .map(midiData => (console.log({midiData}), midiData))
-			// .filter(({msg}) => ['noteOn', 'noteOff'].indexOf(msg.state) > -1)
-			.filter(({msg}) =>
+		parsedMidiMsg$.pipe(
+			// map(midiData => (console.log({midiData}), midiData))
+			// filter(({msg}) => ['noteOn', 'noteOff'].indexOf(msg.state) > -1)
+			filter(({msg}) =>
 				msg.state === 'controller' || msg.state === 'noteOn'
-			)
-			.withLatestFrom(state$, (midiData, state) => (Object.assign({}, midiData, {state})))
-			// .filter(({raw, state}) => (
+			),
+			withLatestFrom(state$, (midiData, state) => (Object.assign({}, midiData, {state})))
+			// filter(({raw, state}) => (
 			// 	// console.log(raw.input.id, state.midiMap.devices.inputs, state.midiMap.data.in),
 			// 	getIds(state.midiMap.devices.inputs, state.midiMap.data.in).indexOf(
 			// 		raw.input.id
 			// 	) > -1
 			// ))
+		)
 			.subscribe(({raw, msg, state}) => {
 				console.log(state.midi.device, raw.input.id, msg.note.number, msg.state);
 				if (
@@ -149,7 +154,7 @@ const hook = ({state$, actions}) => {
 			})
 	);
 
-	unhook = () => subs.forEach(sub => sub.dispose());
+	unhook = () => subs.forEach(sub => sub.unsubscribe());
 };
 
 module.exports = {

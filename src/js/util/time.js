@@ -1,7 +1,8 @@
 'use strict';
 
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable } = require('rxjs');
+const { share, filter, withLatestFrom } = require('rxjs/operators');
+const $ = Observable;
 
 const raf = require('raf');
 
@@ -10,13 +11,16 @@ const tick = cb => raf(function(dt) {
 	tick(cb);
 });
 
-const frame = () => $.create(
-	obs => tick(dt => obs.onNext(dt))
-)
-	.filter(dt => dt !== 0)
-	.share();
+const frame = () => new Observable(
+	obs => tick(dt => obs.next(dt))
+).pipe(
+	filter(dt => dt !== 0),
+	share()
+);
 
-const loop = (state$, node) => frame(node).withLatestFrom(state$, (dt, state) => ({dt, state}));
+const loop = (state$, node) => frame(node).pipe(
+	withLatestFrom(state$, (dt, state) => ({dt, state}))
+);
 
 module.exports = {
 	frame,

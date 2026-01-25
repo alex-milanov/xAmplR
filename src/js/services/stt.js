@@ -1,7 +1,8 @@
 'use strict';
 // lib
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable, from } = require('rxjs');
+const { mergeMap, map, distinctUntilChanged, filter } = require('rxjs/operators');
+const $ = Observable;
 const request = require('superagent');
 
 const SpeechSDK = window.SpeechSDK;
@@ -19,8 +20,8 @@ const init = token => {
 };
 
 const recognize = recognizer =>
-	$.fromCallback(recognizer.recognizeOnceAsync, recognizer)()
-	.map(res => (console.log(res), res));
+	from(recognizer.recognizeOnceAsync())
+		.pipe(map(res => (console.log(res), res)));
 
 let unhook = () => {};
 const hook = ({state$, actions}) => {
@@ -34,17 +35,19 @@ const hook = ({state$, actions}) => {
 		})
 		.then(res => actions.set('stt', res.text));
 
-	state$.distinctUntilChanged(state => state.stt + ' ' + state.sttMic)
-		.filter(state => state.stt && state.sttMic)
-		.map(state => init(state.stt))
-		.flatMap(recognize)
+	state$.pipe(
+		distinctUntilChanged(state => state.stt + ' ' + state.sttMic),
+		filter(state => state.stt && state.sttMic),
+		map(state => init(state.stt)),
+		mergeMap(recognize)
+	)
 		.subscribe(res => {
 			let pattern = res.privText.replace(/\.$/, '');
 			actions.samples.search({pattern});
 			actions.set('sttMic', false);
 		});
 
-	unhook = () => subs.forEach(sub => sub.dispose());
+	unhook = () => subs.forEach(sub => sub.unsubscribe());
 };
 
 module.exports = {

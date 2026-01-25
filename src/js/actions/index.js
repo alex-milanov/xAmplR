@@ -10,6 +10,7 @@ const waveEditor = require('./wave-editor');
 // initial
 const initial = {
 	mode: 2,
+	recording: false,
 	stt: false,
 	sttMic: false,
 	query: '',

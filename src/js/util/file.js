@@ -1,26 +1,27 @@
 'use strict';
 
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable, from, of, concat } = require('rxjs');
+const { mergeMap, reduce } = require('rxjs/operators');
+const $ = Observable;
 const fileSaver = require('file-saver');
 const jsZip = require("jszip");
 const {fn, obj} = require("iblokz-data");
 
-const load = (file, readAs = 'text') => $.create(stream => {
+const load = (file, readAs = 'text') => new Observable(stream => {
 	const fr = new FileReader();
 	fr.onload = function(ev) {
 		// console.log(readAs, ev.target.result);
-		stream.onNext(
+		stream.next(
 			readAs === 'json'
 				? JSON.parse(ev.target.result)
 				: ev.target.result
 		);
-		stream.onCompleted();
+		stream.complete();
 	};
 	// console.log(file, readAs);
 	((typeof file === 'string')
-		? $.fromPromise(fetch(file)).flatMap(res => res.blob())
-		: $.just(file))
+		? from(fetch(file)).pipe(mergeMap(res => res.blob()))
+		: of(file))
 		.subscribe(f => fn.switch(readAs, {
 			arrayBuffer: f => fr.readAsArrayBuffer(f),
 			default: f => fr.readAsText(f)
@@ -28,14 +29,14 @@ const load = (file, readAs = 'text') => $.create(stream => {
 });
 
 const loadZip = file => load(file, 'arrayBuffer')
-	.flatMap(data => $.fromPromise(jsZip.loadAsync(data)))
-	.flatMap(zf => $.concat(
-		Object.keys(zf.files)
+	.pipe(mergeMap(data => from(jsZip.loadAsync(data))))
+	.pipe(mergeMap(zf => concat(
+		...Object.keys(zf.files)
 			.filter(k => !zf.files[k].dir)
 			// .map(k => (console.log(k), k))
-			.map(k => $.fromPromise(zf.files[k].async('arraybuffer')).map(v => ({k, v})))
-		).reduce((o, {k, v}) => obj.patch(o, k, v), {})
-	);
+			.map(k => from(zf.files[k].async('arraybuffer')).map(v => ({k, v})))
+		).pipe(reduce((o, {k, v}) => obj.patch(o, k, v), {}))
+	));
 
 const save = (fileName, content) => fileSaver.saveAs(
 	new Blob([JSON.stringify(content)], {type: "text/plain;charset=utf-8"}),

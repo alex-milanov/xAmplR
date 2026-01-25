@@ -1,7 +1,7 @@
 'use strict';
 // lib
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable } = require('rxjs');
+const $ = Observable;
 
 const request = require('superagent');
 const {obj} = require('iblokz-data');
@@ -83,6 +83,12 @@ const prev = () => state => obj.patch(state, ['samples'], {
 const actions = {
 	initial: {
 		list: [],
+		query: {
+			page: 1,
+			pattern: '',
+			source: 'freesound',
+			limit: 12
+		},
 		index: 0
 	},
 	search,
@@ -93,7 +99,7 @@ const actions = {
 let unhook = () => {};
 const hook = ({state$, actions}) => {
 	let subs = [];
-	unhook = () => subs.forEach(sub => sub.dispose());
+	unhook = () => subs.forEach(sub => sub.unsubscribe());
 };	
 
 module.exports = {

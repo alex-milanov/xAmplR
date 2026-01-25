@@ -1,8 +1,8 @@
 'use strict';
 
 // lib
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable, Subject } = require('rxjs');
+const $ = Observable;
 
 const noop = () => {};
 
@@ -40,20 +40,23 @@ const record = (stream, ctx) => {
 	let chunks = [];
 	mediaRecorder.start();
 
-	let data$ = new Rx.Subject();
+	let data$ = new Subject();
 
 	mediaRecorder.ondataavailable = e => {
 		chunks.push(e.data);
-		console.log({chunk: e.data});
 	};
 
 	mediaRecorder.onstop = () => {
-		data$.onNext(chunks.length === 1 ? chunks[0] : new Blob(chunks, {type: chunks[0].type}));
+		const blob = chunks.length === 1 ? chunks[0] : new Blob(chunks, {type: chunks[0].type});
+		data$.next(blob);
+		data$.complete(); // Complete the Subject after emitting
 	};
 
 	return {
 		data$,
-		stop: () => mediaRecorder.stop()
+		stop: () => {
+			mediaRecorder.stop();
+		}
 	};
 };
 

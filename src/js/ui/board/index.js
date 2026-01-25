@@ -45,7 +45,7 @@ module.exports = ({state, actions}) => section('#board', [].concat(
 			input(`[type="hidden"][name="page"][value=1]`),
 			input(`#board-search-pattern[name="pattern"][placeholder="Query"]`, {
 				attrs: {
-					value: state.samples.query.pattern
+					value: state.samples.query?.pattern || ''
 				}
 			}),
 			button('Search')

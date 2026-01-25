@@ -3,3 +3,7 @@ node_modules
 .env
 .parcel-cache
 dist
+test-results
+playwright-report
+api
+cloud

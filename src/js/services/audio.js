@@ -5,8 +5,9 @@ const uuid = require('uuid/v1');
 const drawWave = require('draw-wave');
 
 // lib
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable, from, of, fromEvent, firstValueFrom } = require('rxjs');
+const { mergeMap, concatMap, map, startWith, distinctUntilChanged, catchError, filter } = require('rxjs/operators');
+const $ = Observable;
 
 const pocket = require('../util/pocket');
 const a = require('../util/audio');
@@ -32,45 +33,51 @@ const connect = devices => state => obj.patch(state, 'audio', {
 
 const load = (sample = {
 	id: `recorded:${uuid()}`
-}, buffer, url) =>
-	(buffer ? $.just(buffer) : $.fromPromise(fetch(url.replace('http://', '//'))
+}, buffer, url) => firstValueFrom(
+	(buffer ? of(buffer) : from(fetch(url.replace('http://', '//'))
 		.then(res => res.arrayBuffer()))
-		.concatMap(buffer => $.fromCallback(a.context.decodeAudioData, a.context)(buffer)))
-	.map(buffer => ({
-		sample,
-		node: sampler.create(url, buffer)
-	}))
-	.map(({sample, node}) => (
-		pocket.put(['sampleBank', sample.id], node),
-		state => obj.patch(state, ['pads', 'map', ...state.pads.focused], {
-			...sample,
-			updated: new Date()
-		})
-	));
+		.pipe(concatMap(buffer => from(a.context.decodeAudioData(buffer)))))
+		.pipe(map(buffer => ({
+			sample,
+			node: sampler.create(url, buffer)
+		})))
+		.pipe(map(({sample, node}) => {
+			pocket.put(['sampleBank', sample.id], node);
+			return state => {
+				const focused = state.pads?.focused || [0, 0];
+				return obj.patch(state, ['pads', 'map', ...focused], {
+					...sample,
+					updated: new Date()
+				});
+			}
+		}))
+		.pipe(catchError(error => {
+			console.error('Error loading audio sample:', error);
+			return of(state => state); // Return identity reducer on error
+		}))
+);
 
 // uuid, {start, end}
-const crop = (id, {start, end}) =>
-	$.just(pocket.get(['sampleBank', id]))
-		.map(node => node.output.buffer)
-		.map(buffer => (
-			console.log('in buffer', buffer instanceof AudioBuffer, start, end, buffer),
-			bufferUtils.slice(buffer, start * buffer.sampleRate, end * buffer.sampleRate)
-		))
-		.map(buffer => (
-			console.log('out buffer', buffer instanceof AudioBuffer, buffer),
-			buffer
-		))
-		.map(buffer => ({
+const crop = (id, {start, end}) => firstValueFrom(
+	of(pocket.get(['sampleBank', id]))
+		.pipe(map(node => node.output.buffer))
+		.pipe(map(buffer => bufferUtils.slice(buffer, start * buffer.sampleRate, end * buffer.sampleRate)))
+		.pipe(map(buffer => ({
 			sample: {id, image: drawBuffer(buffer)},
 			node: sampler.create(null, buffer)
-		}))
-		.map(({sample, node}) => (
-			pocket.put(['sampleBank', sample.id], node),
-			state => obj.patch(state, ['pads', 'map', ...state.pads.focused], {
+		})))
+		.pipe(map(({sample, node}) => {
+			pocket.put(['sampleBank', sample.id], node);
+			return state => obj.patch(state, ['pads', 'map', ...state.pads.focused], {
 				...sample,
 				updated: new Date()
-			})
-		));
+			});
+		}))
+		.pipe(catchError(error => {
+			console.error('Error cropping audio sample:', error);
+			return of(state => state); // Return identity reducer on error
+		}))
+);
 
 const actions = {
 	initial,
@@ -103,38 +110,55 @@ const hook = ({state$, actions}) => {
 	let subs = [];
 
 	// devices
-	$.fromEvent(navigator.mediaDevices, 'devicechange')
-		.startWith({})
-		.flatMap(() => $.fromPromise(navigator.mediaDevices.enumerateDevices()))
-		.map(devices => devices.filter(d => d.kind === 'audioinput'))
+	fromEvent(navigator.mediaDevices, 'devicechange')
+		.pipe(
+			startWith({}),
+			mergeMap(() => from(navigator.mediaDevices.enumerateDevices())),
+			map(devices => devices.filter(d => d.kind === 'audioinput'))
+		)
 		.subscribe(devices => actions.audio.connect(devices));
 
 	let recording = null;
 
-	const getStream = (deviceId = 'default') => $.fromPromise(
+	const getStream = (deviceId = 'default') => from(
 		navigator.mediaDevices.getUserMedia({audio: {deviceId}}));
 
-	state$.distinctUntilChanged(state => state.recording)
-		.map(state => (console.log(state.audio.deviceInputs[0]), state))
-		.flatMap(state => getStream(state.audio.deviceInputs[0]).map(stream => ({state, stream})))
+	const recordingSub$ = state$.pipe(
+		distinctUntilChanged((prev, curr) => prev.recording === curr.recording),
+		mergeMap(state => getStream(state.audio.deviceInputs[0]).pipe(map(stream => ({state, stream}))))
+	)
 		.subscribe(({state, stream}) => {
 			if (state.recording) {
-				// console.log(channel, rec.record, source[channel].stream);
+				// Start new recording (old code didn't clean up previous, just overwrote)
 				recording = rec.record(stream, a.context);
+				// Subscribe to data$ but don't store it - let it stay active (like old code)
 				recording.data$
-					.flatMap(data => file.load(data, 'arrayBuffer'))
-					.flatMap(arrayBuffer => $.fromPromise(a.context.decodeAudioData(arrayBuffer)))
-					.subscribe(buffer => actions.audio.load({
-						id: `recorded:${uuid()}`,
-						image: drawBuffer(buffer)
-					}, buffer));
+					.pipe(mergeMap(data => file.load(data, 'arrayBuffer')))
+					.pipe(mergeMap(arrayBuffer => from(a.context.decodeAudioData(arrayBuffer))))
+					.subscribe({
+						next: buffer => {
+							actions.audio.load({
+								id: `recorded:${uuid()}`,
+								image: drawBuffer(buffer)
+							}, buffer);
+						},
+						error: err => {
+							console.error('Error in recording data$ subscription:', err);
+						}
+					});
 			} else if (recording) {
+				// Stop recording - subscription stays active to receive data$ emission
 				recording.stop();
 				recording = null;
+				// Don't stop the stream - let it stay active (like old code)
 			}
 		});
+	subs.push(recordingSub$);
 
-	unhook = () => subs.forEach(sub => sub.dispose());
+	unhook = () => {
+		subs.forEach(sub => sub.unsubscribe());
+		// Old code didn't clean up recording here - just let it be
+	};
 };
 
 module.exports = {

@@ -1,7 +1,8 @@
 'use strict';
 // lib
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable, fromEvent } = require('rxjs');
+const { filter, withLatestFrom, map } = require('rxjs/operators');
+const $ = Observable;
 
 const gamepad = require('../util/gamepad');
 
@@ -37,8 +38,10 @@ const hook = ({state$, actions}) => {
 	let subs = [];
 
 	gamepad.changes()
-		.map(pads => (console.log({pads}), pads))
-		.withLatestFrom(state$, (pads, state) => ({pads, state}))
+		.pipe(
+			map(pads => (console.log({pads}), pads)),
+			withLatestFrom(state$, (pads, state) => ({pads, state}))
+		)
 		.subscribe(({pads, state}) => {
 			console.log(pads[0]);
 			if (pads[0]) {
@@ -65,12 +68,14 @@ const hook = ({state$, actions}) => {
 			}
 		});
 
-	$.fromEvent(document, 'keydown')
-		.filter(ev =>
-			['input', 'textarea'].indexOf(ev.target.tagName.toLowerCase()) === -1
-			|| ev.target.tagName.toLowerCase() === 'input' && ev.target.type === 'range'
+	fromEvent(document, 'keydown')
+		.pipe(
+			filter(ev =>
+				['input', 'textarea'].indexOf(ev.target.tagName.toLowerCase()) === -1
+				|| ev.target.tagName.toLowerCase() === 'input' && ev.target.type === 'range'
+			),
+			withLatestFrom(state$, (ev, state) => ({ev, state}))
 		)
-		.withLatestFrom(state$, (ev, state) => ({ev, state}))
 		.subscribe(({ev, state}) => {
 			if (ev.key === 'r') {
 				actions.toggle('recording');
@@ -89,7 +94,7 @@ const hook = ({state$, actions}) => {
 			}
 		});
 
-	unhook = () => subs.forEach(sub => sub.dispose());
+	unhook = () => subs.forEach(sub => sub.unsubscribe());
 };
 
 module.exports = {

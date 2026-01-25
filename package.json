@@ -6,10 +6,17 @@
   "scripts": {
     "build": "parcel build --public-url /xAmplR/",
     "start": "parcel",
-    "lint": "eslint src/js --ext .js"
+    "lint": "eslint src/js --ext .js",
+    "test:e2e": "playwright test",
+    "test:e2e:headed": "HEADED=true playwright test",
+    "test:recording": "playwright test test/recording.e2e.test.js",
+    "test:recording:headed": "HEADED=true playwright test test/recording.e2e.test.js",
+    "test:recorder": "playwright test test/recorder.e2e.test.js",
+    "test:recorder:headed": "HEADED=true playwright test test/recorder.e2e.test.js",
+    "screenshot": "node bin/screenshot.js"
   },
   "author": "Alex Milanov <alex@i4web.biz>",
-  "license": "MIT",
+  "license": "AGPL-3.0",
   "dependencies": {
     "audio-buffer-utils": "^5.1.2",
     "cc-icons": "github:cc-icons/cc-icons",
@@ -18,10 +25,11 @@
     "font-awesome": "^4.7.0",
     "html-to-json": "^0.6.0",
     "iblokz-data": "^1.6.0",
-    "iblokz-snabbdom-helpers": "^1.2.0",
+    "iblokz-snabbdom-helpers": "^2.0.0",
+    "iblokz-state": "^1.1.0",
     "jszip": "^3.1.5",
     "raf": "^3.4.1",
-    "rx": "^4.1.0",
+    "rxjs": "^7.8.0",
     "snabbdom": "^0.5.4",
     "superagent": "^3.3.1",
     "uuid": "^3.3.2",

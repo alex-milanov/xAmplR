@@ -1,6 +1,6 @@
 'use strict';
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable } = require('rxjs');
+const $ = Observable;
 
 // util
 const {obj, arr} = require('iblokz-data');

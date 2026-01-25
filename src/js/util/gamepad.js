@@ -1,7 +1,8 @@
 'use strict';
 
-const Rx = require('rx');
-const $ = Rx.Observable;
+const { Observable } = require('rxjs');
+const { map, distinctUntilChanged, share } = require('rxjs/operators');
+const $ = Observable;
 
 const time = require('./time');
 
@@ -21,11 +22,12 @@ const parsePad = pad => pad && ({
 const list = () => Array.from(navigator.getGamepads() || navigator.webkitGetGamepads() || [])
 	.map(parsePad);
 
-const changes = () => time.frame()
-	.map(list)
-	.distinctUntilChanged(pads => pads)
-	//	pads.reduce((r, pad) => !pad && r || (r + (pad.axes || '') + (pad.buttons || '')), ''))
-	.share();
+const changes = () => time.frame().pipe(
+	map(list),
+	distinctUntilChanged(pads => pads),
+	// pads.reduce((r, pad) => !pad && r || (r + (pad.axes || '') + (pad.buttons || '')), '')
+	share()
+);
 
 module.exports = {
 	list,
