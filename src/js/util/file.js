@@ -43,8 +43,24 @@ const save = (fileName, content) => fileSaver.saveAs(
 	fileName
 );
 
+/**
+ * Creates and saves a ZIP file containing the provided files.
+ * @param {string} fileName - The name of the ZIP file to create
+ * @param {Object} files - Object mapping file paths to content (ArrayBuffer, string, or Blob)
+ * @returns {Promise} Promise that resolves when the file is saved
+ */
+const saveZip = (fileName, files) => {
+	const zip = new jsZip();
+	Object.entries(files).forEach(([path, content]) => {
+		zip.file(path, content);
+	});
+	return zip.generateAsync({type: 'blob'})
+		.then(blob => fileSaver.saveAs(blob, fileName));
+};
+
 module.exports = {
 	load,
 	loadZip,
-	save
+	save,
+	saveZip
 };

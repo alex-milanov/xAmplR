@@ -13,6 +13,8 @@ const {obj} = require('iblokz-data');
 
 const pocket = require('../../util/pocket');
 const a = require('../../util/audio');
+const {saveZip} = require('../../util/file');
+const {audioBufferToWav, sanitizeFilename} = require('../../util/audio-export');
 
 
 const drawBuffer = buffer => {
@@ -36,13 +38,24 @@ const fileToAudioBuffer = file => new Promise((resolve, reject) => {
 
 
 const openDialog = () => new Promise((resolve, reject) => {
+	console.log('openDialog');
 	let fileEl = document.createElement('input');
 	fileEl.setAttribute('type', 'file');
+	fileEl.setAttribute('accept', 'audio/*');
+	console.log('fileEl', fileEl);
 	fileEl.addEventListener('change', ev => {
-		console.log(ev.target.files, this);
+		console.log('change', ev.target.files, this);
 		resolve(
 			ev.target.files[0]
 		);
+	});
+	fileEl.addEventListener('load', ev => {
+		console.log('load', ev);
+		resolve(ev.target.result);
+	});
+	fileEl.addEventListener('error', ev => {
+		console.log('error', ev);
+		reject(ev);
 	});
 	fileEl.dispatchEvent(new MouseEvent('click', {
 		view: window,
@@ -50,6 +63,66 @@ const openDialog = () => new Promise((resolve, reject) => {
 		cancelable: true
 	}));
 });
+
+/**
+ * Exports all loaded samples from pads as a ZIP file.
+ * @param {Object} state - The application state containing pads.map
+ */
+const exportSamples = (state) => {
+	const files = {};
+	const metadata = {
+		version: 1,
+		exportDate: new Date().toISOString(),
+		pads: {}
+	};
+
+	const padsMap = state.pads.map || {};
+
+	// Iterate through all pads
+	Object.keys(padsMap).forEach(row => {
+		Object.keys(padsMap[row] || {}).forEach(col => {
+			const padData = padsMap[row][col];
+			if (!padData || !padData.id) return;
+
+			// Get the audio buffer from pocket
+			const node = pocket.get(['sampleBank', padData.id]);
+			if (!node || !node.output || !node.output.buffer) {
+				console.warn(`No audio buffer found for pad [${row}][${col}] with id ${padData.id}`);
+				return;
+			}
+
+			const buffer = node.output.buffer;
+			const safeName = sanitizeFilename(padData.name || 'sample');
+			const fileName = `samples/${row}-${col}-${safeName}.wav`;
+
+			// Convert AudioBuffer to WAV
+			const wavData = audioBufferToWav(buffer);
+			files[fileName] = wavData;
+
+			// Add to metadata
+			if (!metadata.pads[row]) metadata.pads[row] = {};
+			metadata.pads[row][col] = {
+				id: padData.id,
+				name: padData.name || '',
+				file: fileName
+			};
+		});
+	});
+
+	// Check if there are any samples to export
+	if (Object.keys(files).length === 0) {
+		console.log('No samples to export');
+		return;
+	}
+
+	// Add metadata.json
+	files['metadata.json'] = JSON.stringify(metadata, null, 2);
+
+	// Save as ZIP
+	saveZip('xAmplR-samples.zip', files)
+		.then(() => console.log('Samples exported successfully'))
+		.catch(err => console.error('Error exporting samples:', err));
+};
 
 module.exports = ({state, actions}) => header([
 	h1('xAmplR'),
@@ -107,7 +180,9 @@ module.exports = ({state, actions}) => header([
 		li(button(i(`.fa.fa-upload`, {
 			on: {
 				click: () => openDialog()
+					.then(file => (console.log('file', file), file))
 					.then(file => fileToAudioBuffer(file)
+						.then(buffer => (console.log('buffer', buffer), buffer))
 						.then(buffer => ({file, buffer}))
 					)
 					.then(({file, buffer}) => actions.audio.load({
@@ -117,7 +192,11 @@ module.exports = ({state, actions}) => header([
 					}, buffer))
 			}
 		}))),
-		li(button(i(`.fa.fa-save`))),
+		li(button({
+			on: {
+				click: () => exportSamples(state)
+			}
+		}, i('.fa.fa-save'))),
 		// li(button({
 		// 	on: {
 		// 		click: () => actions.set('mode', 0)
